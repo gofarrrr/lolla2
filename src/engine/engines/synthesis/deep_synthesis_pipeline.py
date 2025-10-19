@@ -34,11 +34,11 @@ from src.engine.integrations.perplexity_client_advanced import (
 from src.integrations.apify_client import ApifyMCPClient
 
 # Critique chain components
-from src.core.ackoff_assumption_dissolver import (
+from src.engine.adapters.cognitive_models import  # Migrated (
     AckoffAssumptionDissolver,
     AssumptionDissolveResult,
 )
-from src.core.munger_bias_detector import MungerBiasDetector, BiasDetectionResult
+from src.engine.adapters.cognitive_models import  # Migrated MungerBiasDetector, BiasDetectionResult
 from src.async_senior_advisor import AsyncSeniorAdvisor
 
 # Intelligence and selection

@@ -10,7 +10,7 @@ from datetime import datetime
 from enum import Enum
 
 from src.cognitive_architecture.mental_models_system import ConsultantRole
-from src.core.enhanced_devils_advocate_system import (
+from src.engine.adapters.devils_advocate import  # Migrated (
     ComprehensiveChallengeResult,
     DevilsAdvocateChallenge,
 )

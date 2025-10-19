@@ -80,7 +80,7 @@ class ClaudeProvider(BaseLLMProvider):
             # Handle prompt phase mapping
             prompt_phase = None
             try:
-                from src.core.prompt_capture import PromptPhase
+                from src.engine.adapters.workflow import  # Migrated PromptPhase
 
                 # Map method name to prompt phase
                 phase_mapping = {

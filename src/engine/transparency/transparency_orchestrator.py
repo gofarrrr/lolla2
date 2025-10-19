@@ -30,7 +30,7 @@ from .services.user_expertise_service import (
 
 # Optional integrations (graceful degradation)
 try:
-    from src.core.cognitive_profiler import CognitiveProfiler
+    from src.engine.adapters.monitoring import  # Migrated CognitiveProfiler
 
     COGNITIVE_PROFILER_AVAILABLE = True
 except ImportError:

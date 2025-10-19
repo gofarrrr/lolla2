@@ -13,7 +13,7 @@ from src.interfaces.model_manager_interface import IModelApplicationStrategy
 
 # LLM integration
 try:
-    from src.core.llm_integration_adapter import get_unified_llm_adapter
+    from src.engine.adapters.llm_integration import  # Migrated get_unified_llm_adapter
 except ImportError:
     get_unified_llm_adapter = None
 
@@ -31,7 +31,7 @@ except ImportError:
 
 # Decision capture integration
 try:
-    from src.core.decision_capture import (
+    from src.engine.adapters.workflow import  # Migrated (
         DecisionTree,
         DecisionCriteria,
         DecisionAlternative,

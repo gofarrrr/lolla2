@@ -222,7 +222,7 @@ class ModelPerformanceTracker:
             }
 
             # Store in vector similarity engine
-            from src.core.vector_similarity_detection import PatternType
+            from src.engine.adapters.research import  # Migrated PatternType
 
             await self.vector_similarity_engine.store_pattern(
                 pattern_type=PatternType.PROBLEM_SIMILARITY,

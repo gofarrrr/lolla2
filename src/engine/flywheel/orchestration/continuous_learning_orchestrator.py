@@ -797,7 +797,7 @@ class ContinuousLearningOrchestrator:
         """
         try:
             # Try to connect to Supabase (if available)
-            from src.core.supabase_platform import get_supabase_client
+            from src.engine.adapters.supabase import get_supabase_client  # Migrated
 
             client = get_supabase_client()
 
@@ -850,7 +850,7 @@ class ContinuousLearningOrchestrator:
         Week 2 Day 4: Update learning state in database with processing progress
         """
         try:
-            from src.core.supabase_platform import get_supabase_client
+            from src.engine.adapters.supabase import get_supabase_client  # Migrated
 
             client = get_supabase_client()
 

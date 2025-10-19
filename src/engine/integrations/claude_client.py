@@ -15,7 +15,7 @@ import httpx
 
 # Import prompt capture system
 try:
-    from src.core.prompt_capture import get_prompt_capture, PromptPhase, PromptType
+    from src.engine.adapters.workflow import  # Migrated get_prompt_capture, PromptPhase, PromptType
 
     PROMPT_CAPTURE_AVAILABLE = True
 except ImportError:

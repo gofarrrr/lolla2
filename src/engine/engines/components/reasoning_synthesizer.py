@@ -22,7 +22,7 @@ except ImportError:
 
 # Claude client integration
 try:
-    from src.core.llm_integration_adapter import get_unified_llm_adapter
+    from src.engine.adapters.llm_integration import  # Migrated get_unified_llm_adapter
     from src.config.afterburner_migration import report_afterburner_result
 
     # Legacy imports for backward compatibility
@@ -45,7 +45,7 @@ from src.interfaces.reasoning_synthesizer_interface import (
 from src.config import CognitiveEngineSettings
 
 # Structured exception hierarchy for fail-fast error handling
-from src.core.exceptions import (
+from src.engine.adapters.exceptions import  # Migrated (
     LLMProviderError,
     ComponentFailureError,
     AuthenticationError,

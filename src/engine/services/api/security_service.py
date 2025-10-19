@@ -34,7 +34,7 @@ except ImportError:
     HTTPBearer = None
 
 # Import auth foundation
-from src.core.auth_foundation import (
+from src.engine.adapters.auth_foundation import  # Migrated (
     get_auth_manager,
     Permission,
     UserRole,

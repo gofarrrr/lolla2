@@ -21,7 +21,7 @@ from src.engine.models.data_contracts import (
     ScoringWeights,
     CognitiveFunction,
 )
-from src.core.consultant_config_validator import ConsultantConfigValidator
+from src.engine.adapters.validation import  # Migrated ConsultantConfigValidator
 
 logger = logging.getLogger(__name__)
 

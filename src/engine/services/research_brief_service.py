@@ -13,7 +13,7 @@ from datetime import datetime
 
 # Migrated to use adapter for dependency inversion
 from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType
-from src.core.events.event_emitters import ResearchEventEmitter
+from src.engine.adapters.research import  # Migrated ResearchEventEmitter
 from src.engine.core.feature_flags import FeatureFlagService, FeatureFlag
 from src.engine.integrations.perplexity_client import (
     PerplexityClient,

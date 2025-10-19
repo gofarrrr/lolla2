@@ -21,13 +21,13 @@ from datetime import datetime
 import uuid
 
 from pydantic import BaseModel, Field
-from src.core.contracts.quality import (
+from src.engine.adapters.contracts import  # Migrated (
     RIVAScore,
     CQA_Result,
     QualityAuditRequest,
     QualityDimension,
 )
-from src.core.contracts.rubric_variants import rubric_registry
+from src.engine.adapters.contracts import  # Migrated rubric_registry
 
 # Import specialized rater agents
 from src.agents.ai_rigor_rater_v1 import AIRigorRater

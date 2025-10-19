@@ -33,11 +33,11 @@ from src.engine.models.data_contracts import ReasoningStep, EngagementContext
 from src.interfaces.context_intelligence_interface import IContextIntelligence
 from src.engine.engines.validation.assumption_challenger import AssumptionChallenger
 from src.intelligence.research_armed_challenger import ResearchArmedChallenger
-from src.core.munger_overlay import MungerOverlay, RigorLevel
+from src.engine.adapters.cognitive_models import  # Migrated MungerOverlay, RigorLevel
 
 # LLM integration for internal dialogue
 try:
-    from src.core.llm_integration_adapter import get_unified_llm_adapter
+    from src.engine.adapters.llm_integration import  # Migrated get_unified_llm_adapter
 
     LLM_ADAPTER_AVAILABLE = True
 except ImportError:

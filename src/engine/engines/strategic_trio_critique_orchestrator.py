@@ -26,7 +26,7 @@ import traceback
 from src.engine.engines.synthesis.dynamic_nway_execution_engine import (
     DynamicNWayExecutionEngine,
 )
-from src.core.enhanced_devils_advocate_system import (
+from src.engine.adapters.devils_advocate import  # Migrated (
     EnhancedDevilsAdvocateSystem,
     ComprehensiveChallengeResult,
 )

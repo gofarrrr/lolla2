@@ -18,8 +18,8 @@ from enum import Enum
 from datetime import datetime
 from abc import ABC, abstractmethod
 
-from src.core.performance_cache_system import get_performance_cache, CacheEntryType
-from src.core.stateful_environment import get_stateful_environment, CheckpointType
+from src.engine.adapters.monitoring import  # Migrated get_performance_cache, CacheEntryType
+from src.engine.adapters.workflow import  # Migrated get_stateful_environment, CheckpointType
 
 logger = logging.getLogger(__name__)
 

@@ -175,7 +175,7 @@ class ResearchManager:
 
             # Record Perplexity call in system recorder
             try:
-                from src.core.system_recorder import record_perplexity_call
+                from src.engine.adapters.monitoring import  # Migrated record_perplexity_call
 
                 record_perplexity_call(
                     query=query,
@@ -214,7 +214,7 @@ class ResearchManager:
 
             # Record failed Perplexity call
             try:
-                from src.core.system_recorder import record_perplexity_call
+                from src.engine.adapters.monitoring import  # Migrated record_perplexity_call
 
                 record_perplexity_call(
                     query=query,

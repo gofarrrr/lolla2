@@ -21,7 +21,7 @@ import uuid
 # Enterprise workflow imports
 try:
     from src.engine.models.data_contracts import MetisDataContract, CognitiveState
-    from src.core.streaming_workflow_engine import StreamingEvent
+    from src.engine.adapters.workflow import  # Migrated StreamingEvent
 
     CONTRACT_AVAILABLE = True
 except ImportError:

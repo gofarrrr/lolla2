@@ -29,7 +29,7 @@ from src.engine.models.data_contracts import ReasoningStep
 from src.interfaces.context_intelligence_interface import IContextIntelligence
 from src.engine.engines.validation.assumption_challenger import AssumptionChallenger
 from src.intelligence.research_armed_challenger import ResearchArmedChallenger
-from src.core.munger_overlay import MungerOverlay
+from src.engine.adapters.cognitive_models import  # Migrated MungerOverlay
 from src.intelligence.challenge_research_templates import ChallengeResearchTemplates
 
 
