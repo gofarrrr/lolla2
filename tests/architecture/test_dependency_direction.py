@@ -40,8 +40,8 @@ BASELINE_COUNT = len(BASELINE_FILES) or 146
 
 PHASE_TARGETS = {
     "baseline": 72,  # Updated 2025-10-19: Excludes intentional adapters (src/engine/adapters, src/engine/core)
-    "phase1": 59,    # COMPLETE 2025-10-19: Migrated 13 files (services, engines, quality, security, tools, utils, agents, rag)
-    "phase2": 40,    # Migrate monitoring/quality
+    "phase1": 59,    # COMPLETE 2025-10-19: Migrated 7 files (quality, security, tools, utils, agents, rag)
+    "phase2": 40,    # COMPLETE 2025-10-19: Migrated 23 files (core engines, services, monitoring, pyramid, persistence)
     "phase3": 20,    # Migrate remaining subsystems
     "final": 0,      # Zero violations
 }

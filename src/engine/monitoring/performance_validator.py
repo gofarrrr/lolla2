@@ -24,8 +24,8 @@ try:
         ConfidenceLevel,
         EngagementContext,
     )
-    from src.core.enhanced_event_bus import (
-        EnhancedKafkaEventBus as MetisEventBus,
+    from src.engine.adapters.event_bus import (  # Migrated
+        MetisEventBus,
         CloudEvent,
     )
     from src.engine.core.state_management import DistributedStateManager, StateType

@@ -18,7 +18,7 @@ from collections import defaultdict
 
 try:
     from src.engine.models.data_contracts import MetisDataContract, EngagementContext
-    from src.core.state_management import DistributedStateManager, StateType
+    from src.engine.adapters.state_management import DistributedStateManager, StateType  # Migrated
     from src.monitoring.performance_validator import PerformanceMetricType
 
     DATA_CONTRACTS_AVAILABLE = True

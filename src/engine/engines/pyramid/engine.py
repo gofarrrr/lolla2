@@ -6,14 +6,14 @@ Core engine implementing Barbara Minto's Pyramid Principle
 import logging
 from typing import Dict, Any
 
-from src.core.enhanced_event_bus import (
-    EnhancedKafkaEventBus as MetisEventBus,
+from src.engine.adapters.event_bus import (  # Migrated
+    MetisEventBus,
     CloudEvent,
 )
 
 # State manager with fallback for development
 try:
-    from src.core.state_management import DistributedStateManager, StateType
+    from src.engine.adapters.state_management import DistributedStateManager, StateType  # Migrated
 
     STATE_MANAGER_AVAILABLE = True
 except Exception:

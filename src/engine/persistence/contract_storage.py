@@ -32,7 +32,7 @@ from src.engine.models.data_contracts import (
     MetisDataContract,
     EngagementPhase,
 )
-from src.core.state_management import DistributedStateManager
+from src.engine.adapters.state_management import DistributedStateManager  # Migrated
 
 
 class CheckpointType(str, Enum):

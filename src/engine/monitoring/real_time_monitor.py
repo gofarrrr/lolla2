@@ -26,11 +26,11 @@ try:
         PerformanceAlert,
         get_performance_validator,
     )
-    from src.core.enhanced_event_bus import (
-        EnhancedKafkaEventBus as MetisEventBus,
+    from src.engine.adapters.event_bus import (  # Migrated
+        MetisEventBus,
         CloudEvent,
     )
-    from src.core.state_management import DistributedStateManager, StateType
+    from src.engine.adapters.state_management import DistributedStateManager, StateType  # Migrated
 
     MONITORING_AVAILABLE = True
 except ImportError:

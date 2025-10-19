@@ -20,11 +20,11 @@ import inspect
 
 try:
     from src.engine.models.data_contracts import MetisDataContract, EngagementContext
-    from src.core.enhanced_event_bus import (
-        EnhancedKafkaEventBus as MetisEventBus,
+    from src.engine.adapters.event_bus import (  # Migrated
+        MetisEventBus,
         CloudEvent,
     )
-    from src.core.state_management import DistributedStateManager, StateType
+    from src.engine.adapters.state_management import DistributedStateManager, StateType  # Migrated
     from src.engine.agents.specialized_workers import (
         AgentTask,
         AgentRole,
