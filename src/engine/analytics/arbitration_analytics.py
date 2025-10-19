@@ -17,8 +17,8 @@ from typing import Dict, List, Optional, Any
 from uuid import UUID
 import asyncpg
 
-from src.core.structured_logging import get_logger
-from src.core.feature_flags import FeatureFlag, get_experiment_group
+from src.engine.adapters.logging import get_logger  # Migrated
+from src.engine.adapters.feature_flags import FeatureFlag, get_experiment_group  # Migrated
 from src.config import get_settings
 
 logger = get_logger(__name__, component="arbitration_analytics")

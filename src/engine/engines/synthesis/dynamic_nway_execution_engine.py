@@ -38,7 +38,7 @@ from src.cognitive_architecture.mental_models_system import (
 from src.cognitive_architecture.enhanced_nway_interactions_system import (
     Enhanced21ClusterNWayLibrary,
 )
-from src.core.resilient_llm_client import get_resilient_llm_client, CognitiveCallContext
+from src.engine.adapters.llm_client import get_resilient_llm_client, CognitiveCallContext  # Migrated
 
 logger = logging.getLogger(__name__)
 

@@ -12,7 +12,7 @@ import numpy as np
 from collections import defaultdict, deque
 
 from src.engine.flywheel.cache.flywheel_cache_system import get_flywheel_cache
-from src.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
+from src.engine.adapters.audit_trail import get_audit_manager, AuditEventType, AuditSeverity  # Migrated
 
 logger = logging.getLogger(__name__)
 

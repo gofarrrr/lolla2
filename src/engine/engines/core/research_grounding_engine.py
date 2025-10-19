@@ -17,7 +17,7 @@ import time
 
 # Use mock logger if structured logging unavailable
 try:
-    from src.core.structured_logging import get_logger
+    from src.engine.adapters.logging import get_logger  # Migrated
 
     logger = get_logger(__name__, component="research_grounding")
 except:

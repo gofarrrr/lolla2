@@ -431,7 +431,7 @@ Conduct your meta-analysis now:"""
         if selected_nway_clusters:
             try:
                 # Import Supabase client to fetch cluster details
-                from src.core.supabase_platform import SupabasePlatform
+                from src.engine.adapters.supabase import SupabasePlatform  # Migrated
 
                 platform = SupabasePlatform()
 

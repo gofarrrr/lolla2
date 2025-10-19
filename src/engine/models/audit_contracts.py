@@ -19,7 +19,7 @@ from src.models.transparency_models import (
     UserExpertiseLevel,
     ProgressiveDisclosure,
 )
-from src.core.audit_trail import AuditEventType, MetisAuditTrailManager
+from src.engine.adapters.audit_trail import AuditEventType, MetisAuditTrailManager  # Migrated
 
 
 class CognitivePhase(str, Enum):
@@ -695,7 +695,7 @@ async def save_engagement_audit_trail(trail: EngagementAuditTrail) -> bool:
     # For now, we'll log it as a comprehensive audit event
 
     try:
-        from src.core.audit_trail import get_audit_manager
+        from src.engine.adapters.audit_trail import get_audit_manager  # Migrated
 
         audit_manager = await get_audit_manager()
 

@@ -17,7 +17,7 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
 
-from src.core.resilient_llm_client import ResilientLLMClient, CognitiveCallContext
+from src.engine.adapters.llm_client import ResilientLLMClient, CognitiveCallContext  # Migrated
 from src.v4.core.v4_supabase_adapter import V4SupabaseAdapter
 
 

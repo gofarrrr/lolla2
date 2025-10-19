@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
 from src.config import get_settings
-from src.core.structured_logging import get_logger
+from src.engine.adapters.logging import get_logger  # Migrated
 from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated to adapter, ContextEventType
 
 settings = get_settings()

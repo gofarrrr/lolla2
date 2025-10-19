@@ -15,7 +15,7 @@ from typing import Dict, List, Optional, Any
 from uuid import UUID
 
 from src.config import get_settings
-from src.core.structured_logging import get_logger
+from src.engine.adapters.logging import get_logger  # Migrated
 from src.engine.models.data_contracts import MetisDataContract
 from .engine import PyramidEngine
 from .models import ExecutiveDeliverable

@@ -24,7 +24,7 @@ from src.persistence.contract_storage import (
     CheckpointType,
     ContractVersion,
 )
-from src.core.enhanced_event_bus import MetisEventBus, CloudEvent
+from src.engine.adapters.event_bus import MetisEventBus, CloudEvent  # Migrated
 
 
 class CheckpointTrigger(str, Enum):

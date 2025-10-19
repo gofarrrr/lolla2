@@ -30,7 +30,7 @@ from src.persistence.checkpoint_manager import (
     ContractCheckpointManager,
 )
 from src.persistence.recovery_system import ContractRecoverySystem
-from src.core.enhanced_event_bus import MetisEventBus
+from src.engine.adapters.event_bus import MetisEventBus  # Migrated
 
 
 class ResumeReason(str, Enum):

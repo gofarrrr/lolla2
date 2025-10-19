@@ -16,10 +16,10 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
 
-from src.core.structured_logging import get_logger
+from src.engine.adapters.logging import get_logger  # Migrated
 from src.engine.models.data_contracts import MetisDataContract
 from src.engine.engines.base_engine import BaseEngine
-from src.core.llm_client import LLMClient
+from src.engine.adapters.llm_client import LLMClient  # Migrated
 
 logger = get_logger(__name__, component="enhanced_final_synthesis")
 

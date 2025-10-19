@@ -9,7 +9,7 @@ including workflow, cognitive processing, performance monitoring, and system eve
 from typing import Dict, Any, List, Optional
 from enum import Enum
 from dataclasses import dataclass, field
-from src.core.enhanced_event_bus import create_metis_cloud_event, CloudEvent
+from src.engine.adapters.event_bus import create_metis_cloud_event, CloudEvent  # Migrated
 
 
 # Event Type Categories following METIS domain patterns

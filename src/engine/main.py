@@ -15,8 +15,8 @@ from uuid import UUID, uuid4
 
 # Import all foundation components
 from models.data_contracts import create_engagement_initiated_event
-from src.core.event_bus import get_event_bus
-from src.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
+from src.engine.adapters.event_bus import get_event_bus  # Migrated
+from src.engine.adapters.audit_trail import get_audit_manager, AuditEventType, AuditSeverity  # Migrated
 from src.engine.core.system_health_validator import (
     get_system_health_validator,
 )
@@ -30,7 +30,7 @@ from src.factories.engine_factory import CognitiveEngineFactory
 from src.engine.api.supabase_foundation import (
     get_fastapi_app,
 )
-from src.core.auth_foundation import get_auth_manager
+from src.engine.adapters.auth import get_auth_manager  # Migrated
 from src.engine.api.foundation import get_api_foundation
 
 # Week 2 Day 5: Manual Override API

@@ -9,7 +9,7 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.core.resilient_llm_client import get_resilient_llm_client, CognitiveCallContext
+from src.engine.adapters.llm_client import get_resilient_llm_client, CognitiveCallContext  # Migrated
 from src.v4.core.v4_supabase_adapter import V4SupabaseAdapter
 
 

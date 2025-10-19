@@ -18,7 +18,7 @@ from uuid import UUID, uuid4
 from dataclasses import dataclass, field
 from enum import Enum
 
-from src.core.enhanced_event_bus import MetisEventBus, CloudEvent
+from src.engine.adapters.event_bus import MetisEventBus, CloudEvent  # Migrated
 from src.schemas.event_schemas import MetisEventCategory, MetisEventPriority
 from src.engine.models.data_contracts import MetisDataContract
 from src.persistence.contract_storage import (
@@ -578,7 +578,7 @@ class PersistenceEventIntegrator:
 
         try:
             # Create CloudEvent for persistence event
-            from src.core.enhanced_event_bus import create_metis_cloud_event
+            from src.engine.adapters.event_bus import create_metis_cloud_event  # Migrated
 
             event = create_metis_cloud_event(
                 event_type=f"persistence.{event_type.value}",

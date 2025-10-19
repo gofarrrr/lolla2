@@ -8,7 +8,7 @@ with proper schema validation and CloudEvents v1.0 compliance.
 
 from typing import Dict, Any, Optional, List
 from datetime import datetime
-from src.core.enhanced_event_bus import CloudEvent
+from src.engine.adapters.event_bus import CloudEvent  # Migrated
 from src.schemas.event_schemas import (
     create_standard_event,
     WorkflowEventType,
