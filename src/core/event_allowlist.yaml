@@ -1,0 +1,218 @@
+# Event Transition Allowlist - Operation Bedrock
+#
+# Defines valid event type transitions in UnifiedContextStream.
+# Enforces logical event sequences and prevents invalid state transitions.
+#
+# Format:
+#   event_type:
+#     allowed_next: [list of valid next events]
+#     description: Human-readable description of when this event occurs
+#
+# Special values:
+#   - "*" = any event type is allowed
+#   - "END" = this event can be terminal (end of stream)
+
+# ============================================================================
+# ENGAGEMENT LIFECYCLE
+# ============================================================================
+
+ENGAGEMENT_STARTED:
+  allowed_next: ["*"]  # Can transition to any event after engagement starts
+  description: "Engagement begins - initial event"
+
+ENGAGEMENT_COMPLETED:
+  allowed_next: ["END"]  # Terminal event
+  description: "Engagement ends successfully"
+
+# ============================================================================
+# STAGE LIFECYCLE
+# ============================================================================
+
+PIPELINE_STAGE_STARTED:
+  allowed_next:
+    - "PROMPTS_BUILT"
+    - "STAGE0_EXPERIMENT_ASSIGNED"
+    - "ERROR_OCCURRED"
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Pipeline stage begins execution"
+
+PIPELINE_STAGE_COMPLETED:
+  allowed_next:
+    - "PIPELINE_STAGE_STARTED"
+    - "ENGAGEMENT_COMPLETED"
+    - "CHECKPOINT_SAVED"
+  description: "Pipeline stage completes successfully"
+
+# ============================================================================
+# PROMPT BUILDING & EXECUTION
+# ============================================================================
+
+PROMPTS_BUILT:
+  allowed_next:
+    - "LLM_EXECUTION_COMPLETE"
+    - "LLM_PROVIDER_REQUEST"
+    - "CONSULTANT_ANALYSIS_START"
+    - "ERROR_OCCURRED"
+  description: "Prompts constructed for consultants"
+
+LLM_EXECUTION_COMPLETE:
+  allowed_next:
+    - "AGGREGATION_COMPLETE"
+    - "CONSULTANT_ANALYSIS_COMPLETE"
+    - "ERROR_OCCURRED"
+  description: "All LLM calls completed (parallel execution done)"
+
+LLM_PROVIDER_REQUEST:
+  allowed_next:
+    - "LLM_PROVIDER_RESPONSE"
+    - "ERROR_OCCURRED"
+  description: "LLM provider API call initiated"
+
+LLM_PROVIDER_RESPONSE:
+  allowed_next:
+    - "LLM_PROVIDER_REQUEST"  # Next consultant call
+    - "LLM_EXECUTION_COMPLETE"  # All calls done
+    - "CONSULTANT_ANALYSIS_COMPLETE"
+    - "ERROR_OCCURRED"
+  description: "LLM provider API call completed"
+
+# ============================================================================
+# AGGREGATION
+# ============================================================================
+
+AGGREGATION_COMPLETE:
+  allowed_next:
+    - "ORTHOGONALITY_INDEX_COMPUTED"
+    - "STAGE0_ENRICHMENT_COMPLETE"
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Consultant results aggregated"
+
+ORTHOGONALITY_INDEX_COMPUTED:
+  allowed_next:
+    - "DIVERSITY_WATCHDOG_TRIGGERED"
+    - "MINORITY_REPORT_GENERATED"
+    - "STAGE0_ENRICHMENT_COMPLETE"
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Cognitive diversity score calculated"
+
+DIVERSITY_WATCHDOG_TRIGGERED:
+  allowed_next:
+    - "MINORITY_REPORT_GENERATED"
+    - "STAGE0_ENRICHMENT_COMPLETE"
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Groupthink detected (low orthogonality)"
+
+MINORITY_REPORT_GENERATED:
+  allowed_next:
+    - "STAGE0_ENRICHMENT_COMPLETE"
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Contrarian perspective generated to counter groupthink"
+
+# ============================================================================
+# STAGE 0 ENRICHMENT
+# ============================================================================
+
+STAGE0_EXPERIMENT_ASSIGNED:
+  allowed_next:
+    - "STAGE0_PLAN_RECORDED"
+    - "DEPTH_ENRICHMENT_APPLIED"
+    - "PROMPTS_BUILT"
+    - "ERROR_OCCURRED"
+  description: "Stage 0 enrichment variant assigned"
+
+STAGE0_PLAN_RECORDED:
+  allowed_next:
+    - "DEPTH_ENRICHMENT_APPLIED"
+    - "DEPTH_ENRICHMENT_METRICS"
+    - "PROMPTS_BUILT"
+    - "ERROR_OCCURRED"
+  description: "Depth pack plan recorded for consultants"
+
+DEPTH_ENRICHMENT_APPLIED:
+  allowed_next:
+    - "DEPTH_ENRICHMENT_METRICS"
+    - "PROMPTS_BUILT"
+    - "ERROR_OCCURRED"
+  description: "Depth pack content injected into prompts"
+
+DEPTH_ENRICHMENT_METRICS:
+  allowed_next:
+    - "PROMPTS_BUILT"
+    - "ERROR_OCCURRED"
+  description: "Depth enrichment metrics recorded"
+
+STAGE0_ENRICHMENT_COMPLETE:
+  allowed_next:
+    - "PIPELINE_STAGE_COMPLETED"
+  description: "Stage 0 enrichment finalized"
+
+# ============================================================================
+# CONSULTANT ANALYSIS
+# ============================================================================
+
+CONSULTANT_ANALYSIS_START:
+  allowed_next:
+    - "LLM_PROVIDER_REQUEST"
+    - "CONSULTANT_ANALYSIS_COMPLETE"
+    - "ERROR_OCCURRED"
+  description: "Individual consultant analysis begins"
+
+CONSULTANT_ANALYSIS_COMPLETE:
+  allowed_next:
+    - "CONSULTANT_ANALYSIS_START"  # Next consultant
+    - "LLM_EXECUTION_COMPLETE"  # All consultants done
+    - "AGGREGATION_COMPLETE"
+    - "ERROR_OCCURRED"
+  description: "Individual consultant analysis completes"
+
+CONSULTANT_MEMO_PRODUCED:
+  allowed_next:
+    - "CONSULTANT_ANALYSIS_COMPLETE"
+    - "AGGREGATION_COMPLETE"
+  description: "Consultant memo generated from analysis"
+
+# ============================================================================
+# ERROR HANDLING
+# ============================================================================
+
+ERROR_OCCURRED:
+  allowed_next:
+    - "ERROR_RECOVERED"
+    - "PIPELINE_STAGE_COMPLETED"  # May complete with partial results
+    - "ENGAGEMENT_COMPLETED"
+    - "END"
+  description: "Error occurred during processing"
+
+ERROR_RECOVERED:
+  allowed_next: ["*"]  # Can transition to any event after recovery
+  description: "Error recovered successfully"
+
+# ============================================================================
+# CHECKPOINT MANAGEMENT
+# ============================================================================
+
+CHECKPOINT_SAVED:
+  allowed_next:
+    - "PIPELINE_STAGE_STARTED"
+    - "ENGAGEMENT_COMPLETED"
+  description: "Pipeline state checkpointed"
+
+# ============================================================================
+# GENERIC EVENTS (PERMISSIVE)
+# ============================================================================
+
+REASONING_STEP:
+  allowed_next: ["*"]
+  description: "Reasoning step recorded (permissive)"
+
+SYSTEM_STATE:
+  allowed_next: ["*"]
+  description: "System state recorded (permissive)"
+
+TOOL_EXECUTION:
+  allowed_next: ["*"]
+  description: "Tool executed (permissive)"
+
+TOOL_DECISION:
+  allowed_next: ["*"]
+  description: "Tool decision made (permissive)"

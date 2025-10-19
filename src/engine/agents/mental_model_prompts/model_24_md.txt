@@ -1,0 +1,28 @@
+## Mental Model: Model from 24.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: oversimplification, garbage_in_garbage_out, misinterpretation_of_distributions
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for risk analysis and forecasting under uncertainty. Prompt: 'Let's build a Monte Carlo simulation for our project's budget. Define the key uncertain variables (e.g., material costs, labor hours) and their probability distributions. Run 10,000 trials to generate a distribution of potential final costs and determine the probability of exceeding our budget.' Key for rigorous GOP P2 (Contextual Parameterization).
+
+**Ethical Considerations**: The primary ethical risk lies in the transparency of the model's assumptions. Presenting a Monte Carlo simulation's output as objective truth without clearly stating the subjective probability distributions used for the inputs is a form of deception. Ethical use requires a clear communication of the model's assumptions and limitations.

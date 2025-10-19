@@ -1,0 +1,28 @@
+## Mental Model: Model from 25.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: functional_fixedness, einstellung_effect, oversimplification
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to structure complex processes and create standard operating procedures. Prompt: 'Develop an algorithm for our team's new content approval process. Define each step in a clear, unambiguous sequence, from initial draft to final publication. Consider at least three potential edge cases (e.g., author unavailable, urgent legal review) and specify how the algorithm should handle them.' A core tool for GOP P3 (Strategic Phasing).
+
+**Ethical Considerations**: The design of algorithms has significant ethical implications, especially when they affect people's lives (e.g., in loan applications, sentencing, or content moderation). An ethical algorithm must be designed with fairness, transparency, accountability, and a deep consideration for potential negative impacts on all stakeholder groups. The logic must be auditable and just.

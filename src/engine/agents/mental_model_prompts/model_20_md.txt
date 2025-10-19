@@ -1,0 +1,28 @@
+## Mental Model: Model from 20.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: fundamental_attribution_error, reactive_devaluation, naive_realism
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to generate and coach empathetic, de-escalating communication. Prompt: 'A team member feels their contributions are being ignored. Draft a response using the four components of NVC: state a specific observation, express a feeling, identify the underlying need (e.g., for recognition or inclusion), and make a clear request for future behavior.' Central to GOP P9 (Stakeholder Consideration).
+
+**Ethical Considerations**: NVC is an inherently ethical communication framework. It is built on principles of mutual respect, compassion, and the recognition of shared humanity. It actively works against communication forms that are ethically harmful, such as blame, judgment, and coercion. The core ethical stance is that connection and understanding should precede solutions.

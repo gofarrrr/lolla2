@@ -1,0 +1,28 @@
+## Mental Model: Model from 6.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: system_1_thinking, narrative_fallacy, stereotyping
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to critique reasoning based on profiles or stereotypes. Prompt: 'This conclusion seems to be based on how well the case matches a stereotype. Apply the Representativeness Bias lens. What is the actual base rate for this category? How should that statistical information correct our initial intuitive judgment?' A key model for GOP P6 (Bias Mitigation).
+
+**Ethical Considerations**: This bias is at the root of many forms of prejudice and stereotyping. Making judgments about individuals based on their perceived fit with a group stereotype, while ignoring statistical realities and individual differences, is a fundamental ethical failure in areas like hiring, criminal justice, and social policy.

@@ -1,0 +1,28 @@
+## Mental Model: Model from 1.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: overconfidence_bias, confirmation_bias, chauffeur_knowledge
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as a foundational principle for multidisciplinary analysis. When faced with a complex problem, prompt the AI to apply lenses from psychology, economics, systems thinking, and physics sequentially. Instruct it to identify potential 'Lollapalooza Effects' by looking for converging psychological tendencies or feedback loops. Key for GOP P1 (Model Selection) to broaden the set of considered models and P7 (Model Affinity Optimization) to identify synergistic combinations.
+
+**Ethical Considerations**: Promotes ethical foresight by encouraging a holistic view that considers impacts across social, economic, and psychological domains, reducing the risk of narrow, self-serving decisions.

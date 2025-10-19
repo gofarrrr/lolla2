@@ -1,0 +1,28 @@
+## Mental Model: Model from 32.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: stereotyping, confirmation_bias, einstellung_effect
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to design effective learning materials or to understand how an expert thinks. Prompt: 'Design a lesson on [complex topic] specifically to facilitate schema acquisition for a novice. How would you use analogies, simplification, and chunking to help them build a foundational schema?' Key for understanding expertise in GOP P9.
+
+**Ethical Considerations**: Educators have an ethical responsibility to facilitate the acquisition of accurate and unbiased schemas. Teaching flawed or prejudiced schemas (e.g., stereotypes) can cause significant, lasting harm. Ethical pedagogy involves providing diverse examples and encouraging critical thinking to help learners build robust and flexible schemas.

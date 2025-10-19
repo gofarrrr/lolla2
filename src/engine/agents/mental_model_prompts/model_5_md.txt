@@ -1,0 +1,28 @@
+## Mental Model: Model from 5.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: representativeness_bias, availability_bias, inside_view
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to ground predictions in statistical reality. Prompt: 'Before you make a prediction based on the specific details of this case, what is the relevant base rate for this type of situation? How should that base rate adjust our initial estimate?' This is a critical component for GOP P2 (Contextual Parameterization) and GOP P6 (Bias Mitigation) to counter several cognitive biases.
+
+**Ethical Considerations**: Ignoring base rates can lead to significant ethical failures, particularly in justice and medicine. For instance, racial profiling is a form of base rate fallacy, where group characteristics are used to make judgments about an individual, ignoring the base rate of innocence. In medicine, ignoring the low base rate of a disease can lead to over-diagnosis and harmful, unnecessary treatments based on non-specific symptoms.

@@ -1,0 +1,28 @@
+## Mental Model: Model from 19.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: curse_of_knowledge, confirmation_bias, projection_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to reframe product innovation and marketing. Prompt: 'Instead of listing product features, let's analyze this from a Jobs to Be Done perspective. What is the fundamental 'job' our customer is trying to get done? What progress are they trying to make? What are the functional, social, and emotional components of this job?' The primary framework for GOP P9 (User/Stakeholder Consideration) in an innovation context.
+
+**Ethical Considerations**: An ethical application of JTBD focuses on genuinely helping customers make progress and improve their lives. An unethical application involves identifying deep-seated emotional or social 'jobs' (e.g., insecurity, status anxiety) and designing exploitative products that prey on these vulnerabilities rather than offering a healthy solution.

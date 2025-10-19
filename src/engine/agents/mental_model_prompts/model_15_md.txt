@@ -1,0 +1,28 @@
+## Mental Model: Model from 15.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: extrinsic_motivation_bias, control_illusion
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to analyze and design motivational systems. Prompt: 'Analyze this performance management system using Self-Determination Theory. How well does it support the needs for Autonomy, Competence, and Relatedness? Suggest specific improvements to enhance intrinsic motivation.' Key for GOP P9 (Stakeholder Consideration) and P11 (Ethical Standards).
+
+**Ethical Considerations**: SDT provides a strong ethical framework for leadership and system design. It argues that creating environments that thwart fundamental human needs for autonomy, competence, and relatedness is inherently harmful and disrespectful. An ethical organization is one that actively works to satisfy these needs, fostering genuine well-being alongside performance.

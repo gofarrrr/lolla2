@@ -1,0 +1,28 @@
+## Mental Model: Model from 29.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: bandwagon_effect, herd_behavior, overestimation_of_virality
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to analyze platform business models and growth strategies. Prompt: 'Analyze this business model. Does it have network effects? Are they direct or indirect? What is its viral loop and what is the likely viral coefficient (K)? How can we use virality to kickstart the network effect?'
+
+**Ethical Considerations**: Systems with strong network effects often lead to 'winner-takes-all' markets, creating monopolies with significant ethical responsibilities regarding data privacy, market power, and censorship. Viral dynamics can be ethically exploited to spread misinformation or harmful social trends. Ethical design requires considering the systemic consequences of these powerful growth loops.

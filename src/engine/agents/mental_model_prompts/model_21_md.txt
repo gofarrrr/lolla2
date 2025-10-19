@@ -1,0 +1,28 @@
+## Mental Model: Model from 21.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: hindsight_bias, groupthink, confirmation_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use Premortem for risk assessment and Backcasting for strategic planning. Premortem Prompt: 'Our project has failed one year from now. Let's do a premortem. What went wrong?' Backcasting Prompt: 'It's five years from now and we've achieved our vision. Let's do a backcast. What were the critical milestones we hit to get here?' Core tools for GOP P3 (Strategic Phasing) and P6 (Bias Mitigation).
+
+**Ethical Considerations**: Conducting a premortem is an act of ethical due diligence. It forces a team to consider potential harm to stakeholders as a form of 'failure,' making it a critical tool for responsible planning. Backcasting can be used to ensure that the path to a desirable future does not involve unethical means.

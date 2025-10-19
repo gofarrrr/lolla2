@@ -1,0 +1,28 @@
+## Mental Model: Model from 27.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: stereotyping, ethnocentrism, ecological_fallacy
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to analyze and anticipate cross-cultural differences in strategy and management. Prompt: 'Analyze this business expansion plan into [Country] using Hofstede's Cultural Dimensions. Based on the country's scores for Power Distance and Individualism, what challenges might our standard management practices face, and what adaptations will be necessary?' A key tool for GOP P2 (Contextual Parameterization).
+
+**Ethical Considerations**: The primary ethical risk is misusing this framework to create and reinforce stereotypes about individuals. Ethical application requires using the dimensions to understand societal norms and adapt with respect, not to judge or pigeonhole people. It is a tool for building bridges, not walls.

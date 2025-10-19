@@ -1,0 +1,28 @@
+## Mental Model: Model from 35.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: emotional_reasoning, affect_heuristic, action_bias, escalation_of_commitment
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to model resilient and effective leadership personas. Prompt: 'A leader is facing an unexpected crisis that triggers a strong emotional response. Describe how they would apply emotional regulation. What self-awareness techniques would they use to identify their emotion? What self-management strategies (e.g., tactical breathing, cognitive reframing) would they employ to respond constructively rather than reactively?' Key for GOP P9.
+
+**Ethical Considerations**: The ethical line exists between healthy emotional regulation and the unhealthy suppression or denial of legitimate emotional responses. An ethical culture does not demand that people be emotionless; rather, it creates a psychologically safe environment where emotions can be acknowledged and managed constructively. Forcing individuals to suppress genuine feelings can be manipulative and harmful to well-being.

@@ -1,0 +1,28 @@
+## Mental Model: Model from 10.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: present_bias, urgency_bias, parkinsons_law_of_triviality, availability_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for any planning, strategy, or task management activity. Prompt: 'Given these strategic goals, apply a prioritization framework like the Impact-Effort Matrix to this list of initiatives. Categorize each and recommend a sequence of action.' Central to GOP P3 (Strategic Phasing) and for focusing analysis in GOP P8 (Adaptive Depth).
+
+**Ethical Considerations**: Prioritization has significant ethical weight. Choosing to focus on certain initiatives or stakeholders means choosing to neglect others. An ethical prioritization process must be transparent, just, and aligned with core values, ensuring that 'important' is not just defined by financial gain but also by stakeholder well-being and long-term systemic health.

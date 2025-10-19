@@ -1,0 +1,28 @@
+## Mental Model: Model from 17.md
+
+**Category**: systems
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: curse_of_knowledge, one_size_fits_all_fallacy
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to design adaptive learning or onboarding systems. Prompt: 'Design a two-stage training program for a new software. For the novice stage, provide detailed, scaffolded instructions. For the expert stage, describe how you would remove that scaffolding and introduce problem-based challenges to avoid the Expertise Reversal Effect.' Key for personalizing interactions in GOP P9.
+
+**Ethical Considerations**: It is an ethical failure of instructional design to apply novice-level teaching methods to experts, as it disrespects their existing knowledge, wastes their time, and actively hinders their learning. Effective and ethical pedagogy requires personalization based on expertise.

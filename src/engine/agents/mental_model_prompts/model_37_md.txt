@@ -1,0 +1,28 @@
+## Mental Model: Model from 37.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: confirmation_bias, sunk_cost_fallacy, planning_fallacy, action_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as a framework for launching new, uncertain initiatives. Prompt: 'Develop a Lean Startup plan for this new product idea. What is our core riskiest assumption? What is the simplest MVP we can build to test it? What key metric will we measure to validate learning and decide whether to pivot or persevere?'
+
+**Ethical Considerations**: The 'fail fast' mantra of Lean Startup carries ethical responsibilities. Launching an MVP that is knowingly incomplete or flawed requires transparency with early adopters about its experimental nature. There is an ethical line between a learning experiment and releasing a product that is irresponsibly unstable or harmful. The methodology must be paired with a commitment to user trust and data privacy.

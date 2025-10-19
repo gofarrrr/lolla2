@@ -1,0 +1,28 @@
+## Mental Model: Model from 4.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: narrative_fallacy, illusory_correlation, confirmation_bias, post_hoc_fallacy
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to critique analyses and demand higher standards of evidence. Prompt: 'Critique this conclusion. Has the author demonstrated causation, or are they merely observing a correlation? Identify potential confounding variables or alternative explanations.' Essential for GOP P4 (Critique & Refinement) and P6 (Bias Mitigation).
+
+**Ethical Considerations**: Acting on correlation as if it were causation can lead to deeply unethical and harmful policies. For example, creating discriminatory policies based on a demographic's correlation with a negative outcome, while ignoring the true causal factor (e.g., systemic poverty), constitutes a major ethical failure.

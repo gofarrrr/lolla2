@@ -1,0 +1,3 @@
+# RESURRECTED VIA OPERATION PHOENIX - MINIMAL STUB TO UNBLOCK TRACK B
+class ArbitrationError(Exception):
+    pass

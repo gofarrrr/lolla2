@@ -1,0 +1,8 @@
+#!/bin/sh
+# Pre-commit reminder to clear Python bytecode caches before testing.
+
+if git diff --cached --name-only | grep -E '\.py$' >/dev/null 2>&1; then
+    echo "⚠️  Python files staged. Run 'make dev-restart' to clear __pycache__ before testing."
+    printf "Press Enter to continue, Ctrl+C to abort..."
+    read _reply
+fi

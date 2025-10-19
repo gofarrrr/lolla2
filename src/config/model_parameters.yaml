@@ -1,0 +1,11 @@
+persona_temperatures:
+  strategic_analyst: 0.45
+  market_researcher: 0.50
+  financial_analyst: 0.30
+  risk_assessor: 0.20
+  implementation_specialist: 0.20
+  operations_expert: 0.30
+  technology_advisor: 0.40
+  innovation_consultant: 0.80
+  crisis_manager: 0.25
+

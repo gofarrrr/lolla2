@@ -1,0 +1,28 @@
+## Mental Model: Model from 16.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: bias_blind_spot, motivated_reasoning, overconfidence_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as the default 'orchestrator' mode for any complex analysis. Prompt: 'Apply critical thinking to this proposal. Systematically analyze its core assumptions, evaluate the strength of the supporting evidence, identify any logical fallacies or cognitive biases at play, and assess the overall soundness of its conclusions.' This is the master model for GOP P4 (Critique & Refinement).
+
+**Ethical Considerations**: Critical thinking is an ethical imperative. Failing to apply it to decisions that affect others can lead to harmful outcomes based on flawed reasoning, prejudice, or unexamined assumptions. It is the tool we use to move beyond our own egocentric perspective to consider the rights and needs of others, which is a core task of ethical deliberation.

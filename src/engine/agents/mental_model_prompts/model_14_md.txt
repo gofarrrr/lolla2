@@ -1,0 +1,28 @@
+## Mental Model: Model from 14.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: confirmation_bias, motivated_reasoning, belief_perseverance
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as a trigger for creativity and deep learning. Prompt: 'This new data directly contradicts our long-held assumption about the market. Let's not dismiss it. Let's treat this cognitive contradiction as an opportunity. What new mental models could explain both the old and new data?' A key concept for GOP P4 (Critique & Refinement) to challenge assumptions.
+
+**Ethical Considerations**: Intentionally creating cognitive contradictions to destabilize someone's worldview for manipulative purposes is a significant ethical breach. Ethically, when presenting contradictory information, it should be done in a way that supports constructive learning and minimizes psychological harm, especially in educational or therapeutic contexts.

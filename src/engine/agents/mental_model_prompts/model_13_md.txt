@@ -1,0 +1,28 @@
+## Mental Model: Model from 13.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: oversimplification, reductionist_bias, confirmation_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for scoping any complex analysis. Prompt: 'Before we analyze this problem, let's explicitly define the system boundaries. What key elements are inside the system we are considering? What important external factors are we treating as outside the boundary for now, and what are the risks of that assumption?' A core activity for GOP P0 (Problem Framing) and P2 (Contextual Parameterization).
+
+**Ethical Considerations**: The act of drawing a boundary is an ethical one. Defining a system's scope too narrowly can render important stakeholders or environmental impacts 'external' to the analysis, effectively making them invisible and their well-being irrelevant to the decision. Responsible analysis requires justifying boundary choices and considering the ethical implications of what is excluded.

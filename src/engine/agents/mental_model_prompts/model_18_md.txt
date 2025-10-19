@@ -1,0 +1,28 @@
+## Mental Model: Model from 18.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: apophenia, illusory_correlation
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for visual design and layout tasks. Prompt: 'Analyze this user interface using Gestalt Principles. How does it use proximity and similarity to group related elements? Where could these principles be applied more effectively to improve clarity?' Key for GOP P10 (Communication & Presentation).
+
+**Ethical Considerations**: The power of Gestalt principles can be used unethically to create misleading data visualizations or deceptive user interfaces ('dark patterns') that trick users into unintended actions by exploiting their natural perceptual tendencies to group or perceive information in a certain way.

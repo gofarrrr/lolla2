@@ -1,0 +1,28 @@
+## Mental Model: Model from 3.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: bias_blind_spot, overconfidence_bias, motivated_reasoning
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as an analytical lens to critique reasoning or decisions. Prompt: 'Analyze the following decision-making process for potential cognitive biases. Identify specific biases like confirmation bias, anchoring, or availability, and explain how they may have influenced the outcome.' This is the central model for GOP P6 (Bias Mitigation) and is crucial for stress-testing any analysis in GOP P4 (Critique & Refinement).
+
+**Ethical Considerations**: Understanding cognitive biases is an ethical imperative for leaders, as unchecked biases can lead to unfair, discriminatory, and harmful decisions. Designing systems that mitigate bias is a core principle of creating ethical and just organizations.

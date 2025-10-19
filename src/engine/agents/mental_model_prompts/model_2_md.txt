@@ -1,0 +1,28 @@
+## Mental Model: Model from 2.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: analysis_paralysis, cognitive_load, prediction_fallacy
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: When evaluating strategic decisions, instruct the AI to perform a second-order analysis. Prompt: 'Analyze the immediate, first-order consequences of this decision. Then, for each of those consequences, analyze the second-order effects. Continue to the third order where significant.' Essential for GOP P2 (Contextual Parameterization) to map systemic impacts and P8 (Adaptive Depth) to explore long-term implications.
+
+**Ethical Considerations**: This is a cornerstone of ethical decision-making, especially within a consequentialist framework. It is the primary tool for identifying and mitigating potential long-term harm to diverse or 'invisible' stakeholders who are not affected by first-order outcomes.

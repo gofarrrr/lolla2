@@ -1,0 +1,28 @@
+## Mental Model: Model from 12.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: self_serving_bias, social_desirability_bias, false_consensus_effect
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to shape the persona for leadership or coaching roles where trust is paramount. Prompt: 'Generate a response from a leader who embodies authenticity. The response should acknowledge a difficult truth, express genuine personal feeling about the situation, and align the proposed action with a core company value.' A key element for GOP P9 (Stakeholder Consideration).
+
+**Ethical Considerations**: Authenticity is a cornerstone of ethical leadership. It creates transparency and trust. The opposite, inauthenticity or hypocrisy, erodes trust and creates a cynical culture. However, 'radical authenticity' without social sensitivity can be used as an excuse for cruel or irresponsible behavior, creating an ethical tension that requires judgment and empathy.

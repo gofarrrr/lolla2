@@ -1,0 +1,28 @@
+## Mental Model: Model from 22.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: reductionist_bias, confirmation_bias, availability_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to model and analyze interconnected systems. Prompt: 'Model this [competitive landscape, organizational communication flow] as a network. Identify the key nodes, the nature of the links, and analyze the network for central hubs, clusters, bottlenecks, and potential vulnerabilities.' Essential for GOP P2 (Contextual Parameterization) to map the problem environment.
+
+**Ethical Considerations**: The application of network theory to social systems carries significant ethical responsibilities. It can be used for surveillance, to identify and target vulnerable individuals or dissident groups, or to optimize the spread of misinformation. Ethical use requires transparency, consent, and a focus on collective well-being over control or exploitation.

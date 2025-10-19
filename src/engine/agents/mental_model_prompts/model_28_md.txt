@@ -1,0 +1,28 @@
+## Mental Model: Model from 28.md
+
+**Category**: systems
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: reductionist_bias, linear_thinking, prediction_fallacy, illusion_of_control
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to analyze dynamic, unpredictable environments. Prompt: 'Analyze our market as a Complex Adaptive System. Who are the key agents (e.g., customers, competitors, regulators)? What are their simple interaction rules? What emergent behaviors (e.g., market trends, fads) are we seeing that aren't centrally controlled?' Key for GOP P2 (Contextual Parameterization).
+
+**Ethical Considerations**: Intervening in a CAS (like an economy or ecosystem) carries a heavy ethical burden due to the high potential for large-scale, unpredictable, and irreversible negative consequences. An ethical approach requires intellectual humility, a focus on building resilience rather than imposing control, and a willingness to learn and adapt from small-scale interventions.

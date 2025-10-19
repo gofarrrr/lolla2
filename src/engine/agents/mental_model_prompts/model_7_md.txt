@@ -1,0 +1,28 @@
+## Mental Model: Model from 7.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: curse_of_knowledge, confirmation_bias, false_consensus_effect
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as a guiding framework for any product or system design task. Prompt: 'Develop a high-level plan for a new [product/feature] using a User-Centered Design approach. Outline the key phases: user research, persona creation, prototyping, and usability testing. Emphasize the questions you would ask at each stage to ensure user needs are met.' Essential for GOP P9 (User/Stakeholder Consideration).
+
+**Ethical Considerations**: UCD has a strong ethical component. Designing without understanding users can lead to exclusionary products that are inaccessible or harmful to certain groups. An ethical UCD process actively seeks out diverse and vulnerable users to ensure the final product is equitable, inclusive, and respects user autonomy and privacy.

@@ -1,0 +1,28 @@
+## Mental Model: Model from 8.md
+
+**Category**: strategic
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: analysis_paralysis, reductionist_bias, oversimplification
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for planning and problem-solving tasks. Prompt: 'Take this complex project and apply decomposition. Break it down into a Work Breakdown Structure with at least three levels of detail: Phases, Major Deliverables, and specific Tasks.' A core process for GOP P3 (Strategic Phasing) and a prerequisite for many analyses in GOP P4 (Critique & Refinement).
+
+**Ethical Considerations**: When decomposing ethical dilemmas, there is a risk of analyzing components in isolation and missing the emergent ethical harm that arises from their interaction. A purely decompositional approach must be followed by a systemic, ethical synthesis to be responsible.

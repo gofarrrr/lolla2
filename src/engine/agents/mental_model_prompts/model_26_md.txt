@@ -1,0 +1,28 @@
+## Mental Model: Model from 26.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: automation_bias, algorithm_aversion, black_box_thinking
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use as a design philosophy for any system involving human-AI interaction. Prompt: 'Design the interaction model for a human-AI team tasked with [strategic analysis]. How will the human communicate their goals? How will the AI provide its reasoning (XAI)? What is the workflow for the human to accept, reject, or modify the AI's output?' Key for designing our own system's user interface.
+
+**Ethical Considerations**: The design of human-AI collaboration models carries significant ethical weight. It must prioritize human agency, ensuring the human remains in control and is not a passive operator. Ethical design requires transparency (XAI), accountability (clear responsibility for outcomes), and a focus on augmentation to prevent de-skilling and preserve human dignity and purpose.

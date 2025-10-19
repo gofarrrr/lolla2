@@ -1,0 +1,28 @@
+## Mental Model: Model from 38.md
+
+**Category**: behavioral
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: ethnocentrism, stereotyping, ingroup_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to model and coach for global leadership roles. Prompt: 'A manager is leading a new team with members from three different cultural clusters. Assess this situation through the lens of Cultural Intelligence. What are the key areas where the manager will need to adapt their communication and management style? What specific actions can they take to develop their team's collective CQ?'
+
+**Ethical Considerations**: Developing CQ is an ethical imperative for global organizations. A lack of CQ can lead to disrespectful, exclusionary, and discriminatory practices that harm employees and damage community relations. An ethical organization actively invests in building the CQ of its people to foster a genuinely inclusive and respectful global workplace.

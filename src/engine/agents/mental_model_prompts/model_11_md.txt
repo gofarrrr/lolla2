@@ -1,0 +1,28 @@
+## Mental Model: Model from 11.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: oversimplification, stereotyping, reductionist_bias
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use for synthesis and generalization tasks. Prompt: 'Analyze these three case studies and use abstraction to identify the core, repeatable principles that led to success.' or 'Create an abstract model of this business process, ignoring implementation details to focus on the essential stages and data flows.' Key for GOP P0 (Problem Framing) to distill the core problem and P7 (Model Affinity) to find common structures.
+
+**Ethical Considerations**: Abstraction carries the ethical risk of detaching analysis from human reality. When people, cultures, or ecosystems are abstracted into mere variables or nodes in a system, it becomes easier to make decisions that are efficient but unethical, as their specific, tangible suffering is ignored. Ethical abstraction requires retaining the essential moral features of a situation.

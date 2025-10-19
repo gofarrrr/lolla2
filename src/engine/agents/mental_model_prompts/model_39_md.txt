@@ -1,0 +1,28 @@
+## Mental Model: Model from 39.md
+
+**Category**: analytical
+**Description**: Mental model extracted from database
+
+**Key Concepts**:
+• Core principle
+• Key insight
+• Application method
+
+**Implementation Steps**:
+1. Identify the problem context
+2. Apply the mental model framework
+3. Analyze using key concepts
+4. Generate insights and conclusions
+5. Validate results and iterate
+
+**Application Context**: General Problem Solving
+
+**Bias Vulnerabilities**: facilitator_bias, oversimplification, premature_closure
+
+**Works Well With**: 
+
+**Conflicts With**: 
+
+**Prompt Integration Guide**: Use to structure and facilitate a group problem-solving session. Prompt: 'Facilitate a discussion on this strategic decision using the Six Thinking Hats. We will proceed in the following order: Blue (agenda), White (data), Green (ideas), Yellow (benefits), Black (risks), Red (gut feelings), Blue (summary and next steps). Let's start with the White Hat: what are the objective facts we know?'
+
+**Ethical Considerations**: The primary ethical responsibility falls on the facilitator (Blue Hat). It is unethical to use the framework to manipulate a group towards a predetermined outcome by selectively emphasizing certain hats, misrepresenting contributions, or stifling genuine exploration. The facilitator's duty is to ensure a fair, transparent, and impartial process.
