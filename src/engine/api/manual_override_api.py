@@ -24,12 +24,12 @@ try:
         get_bayesian_updater,
         EffectivenessUpdate,
     )
-    from src.core.value_database_integration import get_value_database_integrator
-    from src.core.continuous_learning_orchestrator import (
+    from src.engine.adapters.core.value_database_integration import get_value_database_integrator
+    from src.engine.adapters.core.continuous_learning_orchestrator import (
         get_continuous_learning_orchestrator,
         LearningTrigger,
     )
-    from src.core.circuit_breaker import get_circuit_breaker
+    from src.engine.adapters.core.circuit_breaker import get_circuit_breaker
 
     DEPENDENCIES_AVAILABLE = True
 except ImportError as e:

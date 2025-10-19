@@ -8,7 +8,7 @@ from typing import Dict, Any
 from fastapi import HTTPException
 
 # Import for Glass Box event emission
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.core.unified_context_stream import UnifiedContextStream, ContextEventType
 
 from .models import (
     ClarificationRequest,
@@ -20,7 +20,7 @@ from .models import (
 
 try:
     from src.engine.core.query_clarification_engine import QueryClarificationEngine
-    from src.core.hitl_interaction_manager import (
+    from src.engine.adapters.core.hitl_interaction_manager import (
         HITLInteractionManager,
         ClarificationPrompt,
     )
@@ -474,7 +474,7 @@ class TieredClarificationHandler:
 
             # Emit Glass Box event for clarification answers processing
             try:
-                from src.core.unified_context_stream import get_unified_context_stream
+                from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
                 context_stream = get_unified_context_stream()
                 await context_stream.emit_event(
                     event_type=ContextEventType.CLARIFICATION_ANSWERS_PROCESSED,

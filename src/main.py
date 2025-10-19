@@ -97,7 +97,7 @@ try:
     from src.engine.api.devils_advocate_api import router as devils_advocate_router
     from src.engine.api.unified_analysis_api import router as unified_router
     from src.engine.api.enhanced_research_api import router as enhanced_research_router
-    from src.engine.api.progressive_questions import router as progressive_questions_router
+    from src.api.routes.progressive_questions import router as progressive_questions_router
     from src.api.routes.admin_evidence_qa import router as admin_evidence_qa_router
     from src.api.feature_flags_api import router as feature_flags_router
     from src.api.v53.dashboards import router as dashboards_router
@@ -119,6 +119,7 @@ try:
     # Specialized Workflows - NWAY Advanced Features
     from src.api.routes.ideaflow import router as ideaflow_router
     from src.api.routes.copywriter import router as copywriter_router
+    from src.api.routes.foundation_routes import router as foundation_router
     from src.api.routes.pitch import router as pitch_router
 
     # Document Upload & Ingestion
@@ -166,6 +167,7 @@ except ImportError as e:
 
 # Initialize FastAPI with V5.3 branding and enhanced OpenAPI config
 from src.api.openapi_config import get_openapi_metadata
+from src.api.middleware import DeprecationHeaderMiddleware
 
 openapi_metadata = get_openapi_metadata()
 app = FastAPI(
@@ -189,6 +191,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Annotate legacy engine routes with deprecation headers
+app.add_middleware(DeprecationHeaderMiddleware)
 
 # Initialize simple in-memory cache for Report v2 bundles
 try:
@@ -530,6 +535,7 @@ if not _MINIMAL_API_MODE:
     app.include_router(unified_router)
     app.include_router(enhanced_research_router)
     app.include_router(progressive_questions_router)
+    app.include_router(foundation_router)
     app.include_router(admin_evidence_qa_router)
     app.include_router(feature_flags_router)
     app.include_router(dashboards_router)
@@ -604,6 +610,7 @@ if not _MINIMAL_API_MODE:
     # Specialized Workflows - NWAY Advanced Features
     app.include_router(ideaflow_router)
     app.include_router(copywriter_router)
+    app.include_router(foundation_router)
     app.include_router(pitch_router)
     app.include_router(documents_router)
     app.include_router(project_chat_router)

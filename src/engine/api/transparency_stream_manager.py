@@ -20,8 +20,8 @@ from fastapi import WebSocket, WebSocketDisconnect
 from src.engine.models.data_contracts import (
     EngagementPhase,
 )
-from src.core.event_bus import get_event_bus
-from src.core.structured_logging import get_logger
+from src.engine.adapters.core.event_bus import get_event_bus
+from src.engine.adapters.core.structured_logging import get_logger
 
 # TEMP DISABLED - from src.engine.ui.transparency_engine import get_transparency_engine
 

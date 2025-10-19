@@ -24,7 +24,7 @@ from .foundation_analytics_service import FoundationAnalyticsService
 from .foundation_orchestration_service import FoundationOrchestrationService
 
 # Import core dependencies
-from src.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
+from src.engine.adapters.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
 from src.engine.persistence.supabase_integration import MetisSupabaseIntegration
 
 

@@ -30,11 +30,11 @@ except ImportError:
 from src.engine.models.data_contracts import (
     create_engagement_initiated_event,
 )
-from src.core.auth_foundation import (
+from src.engine.adapters.core.auth_foundation import (
     get_auth_manager,
     Permission,
 )
-from src.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
+from src.engine.adapters.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
 from src.factories.engine_factory import CognitiveEngineFactory
 
 # Import comparison API components

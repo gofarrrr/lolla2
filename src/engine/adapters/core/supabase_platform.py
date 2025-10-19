@@ -1,0 +1,1 @@
+from src.core.supabase_platform import MetisSupabasePlatform

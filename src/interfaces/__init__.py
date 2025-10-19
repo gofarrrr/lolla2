@@ -14,6 +14,11 @@ from .integration_orchestrator_interface import (
     ServiceInfo,
     ServiceStatus,
 )
+from .context_stream_interface import ContextStream
+from .pipeline_orchestrator_interface import PipelineOrchestrator
+from .llm_manager_interface import LLMManagerInterface
+from .context_metrics import ContextMetrics, ContextMetricsAdapter
+from .evidence import EvidenceExtractor, EvidenceExtractionAdapter
 
 __all__ = [
     "INwayManager",
@@ -27,4 +32,11 @@ __all__ = [
     "IServiceRegistry",
     "ServiceInfo",
     "ServiceStatus",
+    "ContextStream",
+    "PipelineOrchestrator",
+    "LLMManagerInterface",
+    "ContextMetrics",
+    "ContextMetricsAdapter",
+    "EvidenceExtractor",
+    "EvidenceExtractionAdapter",
 ]

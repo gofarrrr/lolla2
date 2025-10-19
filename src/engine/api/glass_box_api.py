@@ -14,9 +14,9 @@ from uuid import UUID
 import logging
 
 from src.engine.core.glass_box_orchestrator import GlassBoxOrchestrator
-from src.core.supabase_auth_middleware import get_current_user, SupabaseUser
+from src.engine.adapters.core.supabase_auth_middleware import get_current_user, SupabaseUser
 from src.models.transparency_models import UserExpertiseLevel, TransparencyLayer
-from src.core.unified_context_stream import UnifiedContextStream
+from src.engine.adapters.core.unified_context_stream import UnifiedContextStream
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ async def get_trace_evidence(
     try:
         # For now, we'll create a mock context stream with the trace_id
         # In production, this would load from persistent storage
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
         context_stream = get_unified_context_stream()
         context_stream.trace_id = trace_id
 

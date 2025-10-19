@@ -366,7 +366,7 @@ async def complete_socratic_analysis(request: CompleteAnalysisRequest):
 
             # Import Progressive Assembly pipeline components
             from src.integrations.llm.unified_client import UnifiedLLMClient
-            from src.core.unified_context_stream import (
+            from src.engine.adapters.core.unified_context_stream import (
                 UnifiedContextStream,
             )
             from src.engine.services.research_brief_service import (
@@ -376,7 +376,7 @@ async def complete_socratic_analysis(request: CompleteAnalysisRequest):
             from src.engine.core.feature_flags import FeatureFlagService, FeatureFlag
 
             llm_client = UnifiedLLMClient()
-            from src.core.unified_context_stream import get_unified_context_stream
+            from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
             pipeline_context_stream = get_unified_context_stream()
 
             # Optional: Generate and attach a neutral Research Brief (feature-flagged)
@@ -647,7 +647,7 @@ async def analyze_consultant_progressive(
     research_brief=None,
 ):
     """Progressive Assembly: Single consultant analysis task with N-Way Infusion"""
-    from src.core.unified_context_stream import ContextEventType
+    from src.engine.adapters.core.unified_context_stream import ContextEventType
     from datetime import datetime
 
     consultant_id = consultant["consultant_id"]
@@ -661,7 +661,7 @@ async def analyze_consultant_progressive(
             from src.engine.utils.nway_prompt_infuser_synergy_engine import (
                 get_nway_synergy_engine,
             )
-            from src.core.supabase_platform import MetisSupabasePlatform
+            from src.engine.adapters.core.supabase_platform import MetisSupabasePlatform
 
             platform = MetisSupabasePlatform()
             synergy_engine = get_nway_synergy_engine(platform.supabase)
@@ -749,7 +749,7 @@ async def critique_analysis_progressive(
     llm_client, context_stream, analysis_data, query, research_brief=None
 ):
     """Progressive Assembly: Devil's Advocate critique task"""
-    from src.core.unified_context_stream import ContextEventType
+    from src.engine.adapters.core.unified_context_stream import ContextEventType
     from datetime import datetime
 
     consultant_id = analysis_data["consultant_id"]
@@ -821,7 +821,7 @@ async def senior_advisor_rapporteur_progressive(
     llm_client, context_stream, cognitive_outputs, query, research_brief=None
 ):
     """Progressive Assembly: Senior Advisor rapporteur meta-analysis"""
-    from src.core.unified_context_stream import ContextEventType
+    from src.engine.adapters.core.unified_context_stream import ContextEventType
     from datetime import datetime
 
     try:

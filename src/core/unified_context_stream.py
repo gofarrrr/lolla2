@@ -113,6 +113,7 @@ class ContextEventType(Enum):
     SENIOR_ADVISOR_TENSION_IDENTIFIED = "senior_advisor_tension_identified"
     LLM_PROVIDER_REQUEST = "llm_provider_request"
     LLM_PROVIDER_RESPONSE = "llm_provider_response"
+    LLM_PROVIDER_FALLBACK = "llm_provider_fallback"
     LLM_CALL_COMPLETE = "llm_call_complete"
     RESEARCH_PROVIDER_REQUEST = "research_provider_request"
     RESEARCH_PROVIDER_RESPONSE = "research_provider_response"
@@ -483,6 +484,7 @@ class UnifiedContextStream:
         CRITICAL_PAYLOAD_EVENTS = {
             ContextEventType.LLM_PROVIDER_REQUEST,
             ContextEventType.LLM_PROVIDER_RESPONSE,
+            ContextEventType.LLM_PROVIDER_FALLBACK,
             ContextEventType.STRUCTURED_FRAMEWORK_CREATED,
             ContextEventType.SOCRATIC_QUESTIONS_GENERATED,
             ContextEventType.DEVILS_ADVOCATE_COMPLETE,

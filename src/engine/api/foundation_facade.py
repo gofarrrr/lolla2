@@ -28,8 +28,8 @@ except ImportError:
 
 # Legacy imports for compatibility
 from src.engine.models.data_contracts import create_engagement_initiated_event
-from src.core.auth_foundation import get_auth_manager, Permission
-from src.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
+from src.engine.adapters.core.auth_foundation import get_auth_manager, Permission
+from src.engine.adapters.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
 from src.factories.engine_factory import CognitiveEngineFactory
 
 # Import comparison API components
@@ -53,8 +53,8 @@ from src.services.infrastructure import (
     RateLimitError, AuthenticationError
 )
 from src.engine.api.errors import setup_exception_handlers
-from src.core.unified_context_stream import UnifiedContextStream
-from src.core.async_helpers import timeout, bounded
+from src.engine.adapters.core.unified_context_stream import UnifiedContextStream
+from src.engine.adapters.core.async_helpers import timeout, bounded
 
 logger = logging.getLogger(__name__)
 
@@ -195,7 +195,7 @@ class MetisAPIFoundation:
             self.security_manager = SecurityManagerFacade(self.auth_service)
             
             # Create context stream for observability
-            from src.core.unified_context_stream import get_unified_context_stream
+            from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
             self.context_stream = get_unified_context_stream()
             
             self.logger.info("✅ Infrastructure services initialized successfully")

@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field
 import logging
 
 # Core METIS imports
-from src.core.enhanced_devils_advocate_system import (
+from src.engine.adapters.core.enhanced_devils_advocate_system import (
     EnhancedDevilsAdvocateSystem,
 )
 

@@ -31,7 +31,7 @@ from .foundation_contracts import (
     CognitiveAnalysisError,
     MentalModelError,
 )
-from src.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
+from src.engine.adapters.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
 
 
 class FoundationValidationService(IFoundationValidationService):

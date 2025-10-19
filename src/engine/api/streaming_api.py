@@ -38,16 +38,16 @@ except ImportError:
 #     StreamingEventType
 # )
 # from src.core.blueprint_orchestrator import get_blueprint_orchestrator  # Missing file
-from src.core.performance_cache_system import get_performance_cache
+from src.engine.adapters.core.performance_cache_system import get_performance_cache
 
 # Legacy streaming for backward compatibility
-from src.core.streaming_workflow_engine import (
+from src.engine.adapters.core.streaming_workflow_engine import (
     streaming_event_handler,
 )
 from src.engine.models.data_contracts import (
     create_engagement_initiated_event,
 )
-from src.core.vulnerability_solutions import VulnerabilitySolutionCoordinator
+from src.engine.adapters.core.vulnerability_solutions import VulnerabilitySolutionCoordinator
 
 
 class StreamingAPI:
@@ -461,7 +461,7 @@ class StreamingAPI:
             # Execute streaming engagement
             try:
                 # NEURAL LACE ORCHESTRATION - Use stateful orchestrator with full data capture
-                from src.core.consolidated_neural_lace_orchestrator import (
+                from src.engine.adapters.core.consolidated_neural_lace_orchestrator import (
                     get_consolidated_neural_lace_orchestrator,
                 )
 
@@ -470,7 +470,7 @@ class StreamingAPI:
                 )
 
                 # Use optimized streaming with parallel processing (Week 2)
-                from src.core.streaming_workflow_engine import StreamingWorkflowEngine
+                from src.engine.adapters.core.streaming_workflow_engine import StreamingWorkflowEngine
 
                 streaming_engine = StreamingWorkflowEngine(
                     neural_lace_orchestrator, enable_parallel_processing=True

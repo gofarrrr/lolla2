@@ -28,14 +28,14 @@ from src.engine.models.data_contracts import (
     CognitiveState,
     WorkflowState,
 )
-from src.core.supabase_auth_middleware import (
+from src.engine.adapters.core.supabase_auth_middleware import (
     get_current_user,
     get_optional_user,
     SupabaseUser,
     has_admin_role,
     can_access_resource,
 )
-from src.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
+from src.engine.adapters.core.audit_trail import get_audit_manager, AuditEventType, AuditSeverity
 from src.factories.engine_factory import CognitiveEngineFactory
 
 

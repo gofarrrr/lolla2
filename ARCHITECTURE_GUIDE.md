@@ -95,6 +95,7 @@ The platform still follows a five-domain mental model, but Operation Lean introd
 - **Security & Compliance**: PII redaction, sensitivity routing, injection firewall, and compliance APIs live in `src/engine/security/` and `src/api/compliance_api.py`.
 - **Memory & Persistence**: Zep memory integration (`src/storage/zep_memory.py`), Supabase persistence (`src/services/orchestration_infra`, `src/engine/persistence/`), checkpoint services in both `src/core` and `src/engine`.
 - **Telemetry & Monitoring**: Confidence scoring (`src/telemetry/confidence.py`), decision quality ribbon (`src/api/decision_quality_ribbon_api.py`), monitoring dashboards (`src/engine/monitoring/`).
+- **LLM Resiliency**: Unified client resilience lives in `src/integrations/llm/` (retry/circuit breaker helpers in `resiliency.py`, observability in `observability.py`, config via `METIS_LLM_*` env vars). Fallback chains emit structured logs + `ContextEventType.LLM_PROVIDER_FALLBACK` events and can be summarised via `scripts/summarize_llm_attempts.py`.
 - **Testing**: `tests/api/`, `tests/core/`, `tests/services/` provide unit/integration coverage for selected modules. Coverage is uneven; new modules often lack tests.
 
 ---
@@ -108,7 +109,8 @@ The platform still follows a five-domain mental model, but Operation Lean introd
   - `src/api/routes` reference orchestration, services, engine, and integrations directly for lazy initialization.
 - **Guidance**:
   - When adding new features, prefer calling downward (higher-level module depending on lower-level contracts). Avoid introducing *new* upward imports from `src/engine` into `src/core` or `src/orchestration`.
-  - If an infrastructure feature truly needs core context (e.g., quality scoring), consider extracting lightweight interfaces into `src/interfaces/` to decouple implementation.
+  - If an infrastructure feature truly needs core context (e.g., quality scoring), depend on the shared interfaces in `src/interfaces/` (`context_stream_interface.py`, `pipeline_orchestrator_interface.py`, `llm_manager_interface.py`) and provide adapters rather than importing core modules directly.
+  - Newly added contracts `ContextMetrics` and `EvidenceExtractor` (with adapters) unlock metrics/evidence access without touching `src/core/services/*`. Prefer these adapters for telemetry, transparency, or monitoring features inside `src/engine`.
   - Before creating a new manager/provider in `src/core`, verify whether an equivalent already exists in `src/engine/core/`.
 
 ---
@@ -116,6 +118,7 @@ The platform still follows a five-domain mental model, but Operation Lean introd
 ## Development Guidelines
 
 - **API work**: add new customer-facing endpoints under `src/api/routes/` and register the router in `src/main.py`. Leave `src/engine/api/` for legacy maintenance only.
+  - V5.3 stateful analysis (`/api/v53/analysis/*`) and progressive questions now live under Lean routes (`src/api/routes/stateful_analysis_routes.py`, `src/api/routes/progressive_questions.py`).
 - **Dispatch & system-2**: contribute to `src/orchestration/` modules. Keep consultant database logic, task classification, and NWAY orchestration inside dispatch seams.
 - **Pipeline stages**: extend or create executors under `src/core/stage_executors/` and update `StatefulPipelineOrchestrator`.
 - **Context management**: use the services in `src/core/services/` when working on validation, formatting, metrics, or persistence. Avoid duplicating this logic in other modules.
@@ -131,6 +134,7 @@ The platform still follows a five-domain mental model, but Operation Lean introd
 - API contract tests reside in `tests/api/`; prefer exercising the Lean routers under `src/api/routes`.
 - When touching `UnifiedContextStream` or related services, add targeted tests (fixtures exist in `tests/core/services/`).
 - Run `make test-architecture` to enforce dependency direction and `main.py` budgets before submitting PRs.
+- LLM security and resiliency guards live under `tests/security/` and `tests/integrations/`; run `pytest -m "security or architecture"` after touching the unified client.
 - Operation Lean is moving toward higher automation coverage. New modules should include tests or documented plans for follow-up suites.
 
 ---
@@ -140,7 +144,7 @@ The platform still follows a five-domain mental model, but Operation Lean introd
 - `src/core/unified_context_stream.py` remains a 1.3k LOC god file; the extracted services reduce churn but do not yet isolate persistence, metrics, and evidence handling from the stream’s core responsibilities.
 - `src/main.py` still exceeds 800 LOC even after route extraction. Remaining startup logic can be decomposed into dedicated bootstrapping modules.
 - Duplicate analysis orchestration exists between `src/api/routes/analyze_routes.py` and `src/services/application/analysis_orchestration_service.py`. Consolidation is required to avoid diverging behaviour.
-- Two API stacks (`src/api` and `src/engine/api`) increase maintenance burden; the Lean router migration should continue until legacy routes can be retired or wrapped.
+- Two API stacks (`src/api` and `src/engine/api`) increase maintenance burden; the Lean router migration should continue until legacy routes can be retired or wrapped. Legacy responses now emit deprecation headers via `src/api/middleware.py` to help track traffic during the sunset campaign.
 - Legacy entry points and experimental scaffolding (`src/engine/main.py`, `src/experiments/`) remain; catalog them as you encounter them and migrate or archive with feature flags.
 - Layering violations (`src/engine` importing `src/core`, services wiring into infrastructure) should be addressed via shared interfaces and dependency injection improvements.
 - Test coverage is inconsistent. Core orchestration refactors need regression suites before further extractions.

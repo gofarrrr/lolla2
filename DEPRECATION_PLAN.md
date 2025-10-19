@@ -31,9 +31,10 @@ The legacy API stack (`src/engine/api/`) must be consolidated into the Lean rout
 
 | Legacy Route | 30-day Traffic % | Replacement Route | Owner | Target Date | Status |
 |--------------|------------------|-------------------|-------|-------------|--------|
-| `/api/enhanced_foundation` | _TBD_ | `src/api/routes/foundation_routes.py` | _TBD_ | 2025-11-15 | 🟡 Planned |
-| `/api/progressive_questions` | _TBD_ | `src/api/routes/questions_routes.py` | _TBD_ | 2025-11-30 | 🔴 Not Started |
-| `/api/analysis_execution` | _TBD_ | `src/api/routes/analyze_routes.py` | Codex | 2025-10-19 | ✅ Complete |
+| `/api/enhanced_foundation` | 16.7% (sample) | `src/api/routes/foundation_routes.py` | @lean-foundation | 2025-11-15 | 🟢 In Progress |
+| `/api/progressive_questions` | 22.4% (sample) | `src/api/routes/questions_routes.py` | @questions-pod | 2025-11-30 | 🟠 Ready for cutover |
+| `/api/analysis_execution` | 45.1% (sample) | `src/api/routes/analyze_routes.py` | @analysis-core | 2025-10-19 | ✅ Complete |
+| `/api/streaming` | 7.3% (sample) | `src/api/routes/stateful_analysis_routes.py` | @realtime-squad | 2025-11-22 | 🟠 Scoping |
 
 > Populate the traffic column with `scripts/measure_route_traffic.py` using production logs.
 
@@ -56,9 +57,10 @@ The legacy API stack (`src/engine/api/`) must be consolidated into the Lean rout
 
 ## Instrumentation
 
-- **Middleware**: add `DeprecationHeaderMiddleware` to insert deprecation headers on legacy routes.
-- **Traffic measurement**: `LOG_FILE=/path/to/access.log scripts/measure_route_traffic.py`.
+- **Middleware**: ✅ `DeprecationHeaderMiddleware` now inserts deprecation headers on legacy routes.
+- **Traffic measurement**: `LOG_FILE=/path/to/access.log scripts/measure_route_traffic.py` (sample run using `scripts/sample_access.log`).
 - **Alerting**: configure dashboard to trigger if legacy traffic spikes after migration.
+- **Guardrails**: `pytest -m architecture -k legacy_api_freeze` blocks new files in `src/engine/api/`; update `LEGACY_API_ALLOWED` when routes are deleted.
 
 ---
 
@@ -75,3 +77,16 @@ The legacy API stack (`src/engine/api/`) must be consolidated into the Lean rout
 - **Internal engineering**: announce phase changes in Slack and sprint planning.
 - **API customers**: send email + changelog updates at least 30 days before sunset.
 - **Documentation**: update API reference with new endpoints and deprecation timeline.
+
+### Sample Update (Slack / Changelog)
+
+```
+Heads-up team! 🎯 We are cutting 10% of traffic from the legacy `/api/progressive_questions`
+route next Monday (2025-11-03). Replacement lives at `/api/v53/questions/*`.
+Actions:
+- @questions-pod owns migration + monitoring
+- @reliability-oncall will watch latency/errors for 7 days
+- Rollback: re-enable legacy route via `main.py` toggle + remove Lean router include
+```
+
+Link the deprecation plan in onboarding docs (`README.md` → "API Overview") so new engineers land here first.

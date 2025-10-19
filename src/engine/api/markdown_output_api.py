@@ -25,11 +25,11 @@ from src.utils.markdown_formatter import (
     get_markdown_formatter,
     MarkdownFormattingOptions,
 )
-from src.core.supabase_platform import MetisSupabasePlatform
+from src.engine.adapters.core.supabase_platform import MetisSupabasePlatform
 
 # Financial Transparency Enhancement - Import metrics aggregation
 from src.engine.metrics.aggregator import get_metrics_aggregator
-from src.core.unified_context_stream import get_unified_context_stream
+from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
 
 # Set up logging
 logger = logging.getLogger(__name__)

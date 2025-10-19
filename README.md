@@ -119,6 +119,9 @@ make format    # Format with black and ruff
 make check     # Lint + unit + integration tests
 ```
 
+- Legacy API sunset in flight → consult [DEPRECATION_PLAN.md](DEPRECATION_PLAN.md) before touching files under `src/engine/api/`.
+- Observability helpers: `scripts/summarize_llm_attempts.py --log backend_live.log` summarises LLM fallback metrics from structured logs.
+
 ---
 
 ## Recent Achievements (Operation Lean)

@@ -56,6 +56,7 @@ _llm_client = None
 
 
 def get_analysis_components():
+    from src.engine.adapters import create_pipeline_orchestrator
     """Get or initialize analysis components"""
     global _dispatch_orchestrator, _nway_pattern_service, _quality_rater, _llm_client
 

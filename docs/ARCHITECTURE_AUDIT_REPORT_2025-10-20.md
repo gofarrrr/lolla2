@@ -45,15 +45,16 @@
 3. **Layering violations between infrastructure and core layers**  
    - Example: `src/engine/api/unified_analysis_api.py:38` imports `src/core.enhanced_devils_advocate_system` and re-imports `UnifiedContextStream` at runtime (`src/engine/api/unified_analysis_api.py:124`).  
    - Numerous other `src/engine` modules import `src/core` (search produced 261 hits).  
-   - Recommendation: introduce slim interfaces in `src/interfaces/` for core concepts (context stream, pipeline orchestrator) and depend on those from `src/engine`. Update the architecture decision record once the dependency direction is enforced.
+   - Recommendation: introduce slim interfaces in `src/interfaces/` for core concepts (context stream, pipeline orchestrator) and depend on those from `src/engine`. Update the architecture decision record once the dependency direction is enforced.  
+   - Progress: Baseline captured in `docs/ENGINE_CORE_DEPENDENCY_BASELINE.md`, guardrail now reads the snapshot, and initial protocols (`context_stream_interface.py`, `pipeline_orchestrator_interface.py`, `llm_manager_interface.py`) are available for migrations.
 
 4. **FastAPI entrypoint still should be decomposed**  
    - `src/main.py:1` is 804 LOC even after Operation Lean. Startup, router registration, and health diagnostics live alongside analytics route wiring.  
    - Recommendation: break the file into `app_factory.py`, `router_registry.py`, and `startup_events.py` modules. Keep `main.py` as a thin bootstrap. Add smoke tests for the app factory.
 
 5. **Dual API stacks increase maintenance surface**  
-   - Lean routers live in `src/api/routes/`, while legacy routers persist under `src/engine/api/`. Many features are split between both (e.g., progressive questions under engine, confidence routes under new stack).  
-   - Recommendation: continue migrating routers into `src/api/routes/` and flag each remaining `src/engine/api` module with a retirement plan. Update documentation once migration reaches 80% of traffic.
+   - Lean routers live in `src/api/routes/`, while legacy routers persist under `src/engine/api/`. Many features were split between both (e.g., progressive questions under engine, confidence routes under new stack).  
+   - Progress: `/api/v53/analysis/*` and `/api/progressive-questions/*` now served from Lean routes; engine modules re-export for backward compatibility. Update documentation once migration reaches 80% of traffic and remove the legacy shims.
 
 6. **Pilot and backup variants drift from production**  
    - Cleanup performed on 2025-10-20 removed dormant pilot/backups (`src/main_backup_pre_refactor.py`, legacy stage executors, unused devils-advocate scaffolding).  
@@ -64,8 +65,9 @@
 ## Additional Opportunities
 
 - **Service cluster accuracy**: `src/services/__init__.py:1` still advertises 17 services across three clusters, yet the current count is 25+ once analytics and orchestration helpers are included. Update the service registry to reflect reality or prune unused modules.
-- **Dependency contracts**: Shared data models live in `src/interfaces/` but remain underused. Expand these interfaces (e.g., context stream, pipeline orchestrator, LLM manager) to decouple services from concrete implementations.
+- **Dependency contracts**: Shared data models live in `src/interfaces/` but remain underused. New protocols for context streams, pipeline orchestrators, and LLM managers have landed; migrate infrastructure modules to these contracts to remove direct `src.core` imports.
 - **UnifiedLLMClient hard-codes engine dependencies**: `src/integrations/llm/unified_client.py:28` imports PII redaction, injection firewall, and grounding contracts directly from `src/engine`. Consider injecting these capabilities or introducing a security façade to simplify testing.
+- **LLM resiliency**: Initial retry/circuit-breaker scaffolding is now in place (`src/integrations/llm/resiliency.py`) with env configuration (`METIS_LLM_*`), but security regression tests and detailed metrics remain outstanding.
 - **Supabase/Zep interactions lack tests**: Persistence services call external systems (`src/storage/supabase_store.py:1`, `src/storage/zep_memory.py:1`) without integration coverage. Mock-based tests should verify serialization formats and error handling.
 - **Telemetry stores in FastAPI app state**: `src/api/routes/confidence_routes.py:80` relies on `app.state.confidence_store`. This implicit dependency should be moved into a repository abstraction or at least initialised during startup.
 
@@ -83,9 +85,9 @@
 ## Testing & Quality Observations
 
 - Unit tests exist for portions of the context services (`tests/core/services/test_context_persistence_service.py`, `tests/core/services/test_context_formatting_service.py`) but do **not** cover the latest refactors (analysis routes, System-2 services).  
-- There is no regression suite for the Lean routers under `tests/api/routes`. Add end-to-end tests for `/api/v53/analyze` and `/api/v53/confidence/*`.  
+- There is no regression suite for the Lean routers under `tests/api/routes`. Add end-to-end tests for `/api/v53/analyze` and `/api/v53/confidence/*`. A starting point exists with `tests/api/test_deprecation_middleware.py` covering the deprecation headers.  
 - No automated checks guard the unified LLM client’s security features; consider adding contract tests that stub engine dependencies.
-- Recommend adding CI tasks that enforce dependency direction (e.g., module boundary tests) once interfaces are in place.
+- Architecture guardrails (`make test-architecture`) now block new `src/engine → src/core` imports; extend them with milestone targets as migrations progress.
 
 ---
 
@@ -110,7 +112,7 @@
 
 ## Execution Framework (P0 → P3)
 
-- **P0 (Week 1)**: delete/re-home backup files, land dependency-direction architecture test with baseline, reconcile documented service counts.
+- **P0 (Week 1)**: ✅ delete/re-home backup files, land dependency-direction architecture test with baseline, reconcile documented service counts.
 - **P1 (Weeks 2-3)**: finish UnifiedContextStream decomposition, consolidate `/api/v53/analyze` through the service layer, publish `DEPRECATION_PLAN.md`, add first LLM security regression.
 - **P2 (Month 2)**: roll out shared interfaces, expand route/regression suites, formalize DeepSeek fallbacks and cache warnings in docs.
 - **P3 (Monitor)**: keep `main.py` under 850 LOC and CC≤8; refactor only if budget exceeded.

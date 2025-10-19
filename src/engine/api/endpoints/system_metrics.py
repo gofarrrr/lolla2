@@ -11,8 +11,8 @@ from fastapi import APIRouter, HTTPException
 from typing import Dict, Any
 from datetime import datetime, timezone
 
-from src.core.orchestrator_selector import get_orchestrator_selector, OrchestratorMode
-from src.core.structured_logging import get_logger
+from src.engine.adapters.core.orchestrator_selector import get_orchestrator_selector, OrchestratorMode
+from src.engine.adapters.core.structured_logging import get_logger
 
 router = APIRouter(prefix="/api/v1/system", tags=["system", "metrics"])
 logger = get_logger(__name__, component="system_metrics")

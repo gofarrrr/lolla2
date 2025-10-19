@@ -4,8 +4,10 @@ Unified LLM Client
 Orchestrates multiple LLM providers and provides unified interface
 """
 
+import asyncio
 import os
 import logging
+import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
@@ -20,7 +22,10 @@ from .openai_provider import OpenAIProvider
 from .openrouter_provider import OpenRouterProvider
 from .deepseek_provider import DeepSeekProvider  # Use local bridge to avoid circular import
 from .cognitive_analyzer import CognitiveAnalyzer
+from .resiliency import RetryPolicy, CircuitBreaker
+from .observability import LLMObservability, AttemptMetrics
 from src.core.unified_context_stream import get_unified_context_stream, ContextEventType
+from src.config import get_settings
 
 # Import pipeline refactoring components (P0 #0)
 from .pipeline import create_llm_pipeline, LLMCallContext, LLMCallPipeline
@@ -32,6 +37,34 @@ try:
     INTELLIGENT_CACHE_AVAILABLE = True
 except ImportError:
     INTELLIGENT_CACHE_AVAILABLE = False
+
+
+def _env_int(name: str, default: str) -> int:
+    try:
+        return int(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _env_float(name: str, default: str) -> float:
+    try:
+        return float(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return float(default)
+
+
+DEFAULT_PROVIDER_ORDER = [
+    part.strip()
+    for part in os.getenv(
+        "METIS_LLM_PROVIDER_ORDER", "deepseek,anthropic,openrouter,claude"
+    ).split(",")
+    if part.strip()
+]
+FALLBACK_TIMEOUT_SECONDS = _env_float("METIS_LLM_TIMEOUT_SECONDS", "45")
+FALLBACK_MAX_RETRIES = _env_int("METIS_LLM_MAX_RETRIES", "3")
+FALLBACK_RETRY_BASE_DELAY = _env_float("METIS_LLM_RETRY_BASE_DELAY", "1.0")
+FALLBACK_CIRCUIT_THRESHOLD = _env_int("METIS_LLM_CIRCUIT_THRESHOLD", "3")
+FALLBACK_CIRCUIT_COOLDOWN = _env_float("METIS_LLM_CIRCUIT_COOLDOWN_SECONDS", "60")
 
 # Load environment variables with enhanced error handling
 try:
@@ -73,6 +106,37 @@ class UnifiedLLMClient:
         self.logger = logging.getLogger(__name__)
         self._providers = {}
         self._call_recorder = []  # For audit trail
+        self.provider_order_override = DEFAULT_PROVIDER_ORDER
+        self.request_timeout = FALLBACK_TIMEOUT_SECONDS
+        self.retry_policy = RetryPolicy(
+            max_attempts=max(1, FALLBACK_MAX_RETRIES),
+            base_delay=max(0.1, FALLBACK_RETRY_BASE_DELAY),
+            max_delay=max(FALLBACK_RETRY_BASE_DELAY * 4, FALLBACK_TIMEOUT_SECONDS / 2),
+        )
+        self._circuit_failure_threshold = FALLBACK_CIRCUIT_THRESHOLD
+        self._circuit_cooldown_seconds = FALLBACK_CIRCUIT_COOLDOWN
+        self._circuit_breakers: Dict[str, CircuitBreaker] = {}
+        self._observability = LLMObservability(logger=self.logger)
+
+        try:
+            settings = get_settings()
+            provider_cfg = settings.llm_providers
+            sequence = provider_cfg.provider_sequence
+            if sequence:
+                self.provider_order_override = sequence
+            self.request_timeout = provider_cfg.request_timeout_seconds
+            self.retry_policy = RetryPolicy(
+                max_attempts=max(1, provider_cfg.retry_attempts),
+                base_delay=max(0.1, provider_cfg.retry_delay_seconds),
+                max_delay=max(
+                    provider_cfg.retry_delay_seconds * 4,
+                    provider_cfg.request_timeout_seconds / 2,
+                ),
+            )
+            self._circuit_failure_threshold = provider_cfg.circuit_failure_threshold
+            self._circuit_cooldown_seconds = provider_cfg.circuit_cooldown_seconds
+        except Exception:  # noqa: BLE001
+            self.logger.debug("Falling back to env defaults for LLM resiliency config")
 
         # ENTERPRISE SECURITY (Phase 6): PII Redaction + Sensitivity Routing
         self.pii_redaction_enabled = pii_redaction_enabled
@@ -343,6 +407,10 @@ class UnifiedLLMClient:
             try:
                 self._providers["openrouter"] = OpenRouterProvider(openrouter_key)
                 self.logger.info("✅ OpenRouter/Grok-4-Fast provider initialized (PRIMARY)")
+                self._circuit_breakers["openrouter"] = CircuitBreaker(
+                    failure_threshold=self._circuit_failure_threshold,
+                    recovery_time=self._circuit_cooldown_seconds,
+                )
 
             except Exception as e:
                 self.logger.error(f"❌ Failed to initialize OpenRouter provider: {e}")
@@ -354,6 +422,10 @@ class UnifiedLLMClient:
             try:
                 self._providers["anthropic"] = ClaudeProvider(anthropic_key)
                 self.logger.info("✅ Claude/Anthropic provider initialized")
+                self._circuit_breakers["anthropic"] = CircuitBreaker(
+                    failure_threshold=self._circuit_failure_threshold,
+                    recovery_time=self._circuit_cooldown_seconds,
+                )
 
                 # Test connectivity asynchronously (store for later use)
                 self._anthropic_available = None  # Will be set on first use
@@ -368,6 +440,10 @@ class UnifiedLLMClient:
             try:
                 self._providers["deepseek"] = DeepSeekProvider(deepseek_key)
                 self.logger.info("✅ DeepSeek provider initialized")
+                self._circuit_breakers["deepseek"] = CircuitBreaker(
+                    failure_threshold=self._circuit_failure_threshold,
+                    recovery_time=self._circuit_cooldown_seconds,
+                )
 
             except Exception as e:
                 self.logger.error(f"❌ Failed to initialize DeepSeek provider: {e}")
@@ -379,6 +455,10 @@ class UnifiedLLMClient:
             try:
                 self._providers["openai"] = OpenAIProvider(openai_key)
                 self.logger.info("✅ OpenAI provider initialized")
+                self._circuit_breakers["openai"] = CircuitBreaker(
+                    failure_threshold=self._circuit_failure_threshold,
+                    recovery_time=self._circuit_cooldown_seconds,
+                )
 
             except Exception as e:
                 self.logger.error(f"❌ Failed to initialize OpenAI provider: {e}")
@@ -398,6 +478,80 @@ class UnifiedLLMClient:
     def get_available_providers(self) -> List[str]:
         """Get list of available providers"""
         return list(self._providers.keys())
+
+    async def _call_with_resiliency(self, provider_key: str, call_fn, *args, **kwargs):
+        breaker = self._circuit_breakers.get(provider_key)
+        if breaker and not breaker.allow():
+            raise ProviderUnavailableError(f"{provider_key} circuit open; cooldown in effect")
+
+        attempt_counter = {"count": 0}
+        attempt_logs: List[AttemptMetrics] = []
+
+        async def _operation():
+            attempt_counter["count"] += 1
+            attempt_no = attempt_counter["count"]
+            start = time.monotonic()
+            circuit_state = breaker.state if breaker else None
+            try:
+                result = await asyncio.wait_for(
+                    call_fn(*args, **kwargs),
+                    timeout=self.request_timeout,
+                )
+            except Exception as exc:  # noqa: BLE001
+                latency_ms = (time.monotonic() - start) * 1000
+                metrics = AttemptMetrics(
+                    provider=provider_key,
+                    attempt=attempt_no,
+                    latency_ms=latency_ms,
+                    status="error",
+                    error=str(exc),
+                    circuit_state=circuit_state,
+                )
+                attempt_logs.append(metrics)
+                self._observability.record_attempt(metrics)
+                setattr(exc, "llm_attempt_logs", attempt_logs.copy())
+                raise
+            else:
+                latency_ms = (time.monotonic() - start) * 1000
+                metrics = AttemptMetrics(
+                    provider=provider_key,
+                    attempt=attempt_no,
+                    latency_ms=latency_ms,
+                    status="success",
+                    circuit_state=circuit_state,
+                )
+                attempt_logs.append(metrics)
+                self._observability.record_attempt(metrics)
+                return result
+
+        def _on_retry(attempt: int, exc: Exception, delay: float) -> None:
+            self._observability.record_retry_scheduled(
+                provider=provider_key,
+                attempt=attempt,
+                delay_seconds=delay,
+                error=exc,
+            )
+            self.logger.warning(
+                "⚠️ Provider %s attempt %s failed (%s). Retrying in %.2fs",
+                provider_key,
+                attempt,
+                exc,
+                delay,
+            )
+
+        try:
+            result = await self.retry_policy.execute(
+                _operation,
+                on_retry=_on_retry,
+            )
+        except Exception as exc:  # noqa: BLE001
+            if breaker:
+                breaker.record_failure()
+            raise exc
+        else:
+            if breaker:
+                breaker.record_success()
+            return result, attempt_logs
 
     def _prompt_hash(self, messages: List[Dict]) -> str:
         import json, hashlib
@@ -634,45 +788,153 @@ class UnifiedLLMClient:
         if provider_key not in self._providers:
             raise ProviderUnavailableError(f"{provider} provider not initialized")
 
-        provider_instance = self._providers[provider_key]
+        candidate_chain = [provider_key] + [
+            candidate
+            for candidate in self.provider_order_override
+            if candidate != provider_key and candidate in self._providers
+        ]
 
-        # SAFETY: Validate model/provider combination (Phase 5)
-        try:
-            from src.engine.services.llm.model_registry import get_model_registry
+        response: Optional[LLMResponse] = None
+        selected_provider_key = provider_key
+        last_error: Optional[Exception] = None
+        attempt_history: Dict[str, List[AttemptMetrics]] = {}
 
-            registry = get_model_registry()
-            registry.validate_or_raise(provider_key, model)
-        except ValueError as e:
-            self.logger.error(f"❌ Model validation failed: {e}")
-            raise
+        for candidate in candidate_chain:
+            provider_instance = self._providers[candidate]
 
-        # Check provider availability
-        if not await provider_instance.is_available():
-            raise ProviderUnavailableError(f"{provider} provider not available")
-
-        try:
-            self.logger.info(
-                f"🤖 V2.1 Routing: {provider} with {len(messages)} messages, model: {model}"
-            )
-
-            # ====================================================================
-            # LLM CALL (Provider-specific logic now handled by ProviderAdapterStage)
-            # ====================================================================
-            response = await provider_instance.call_llm(messages, model, **call_kwargs)
-
-            # Ensure metadata dict
-            if response.metadata is None:
-                try:
-                    response.metadata = {}
-                except Exception:
-                    pass
-
-            # Style score and gate (Phase 2)
+            # SAFETY: Validate model/provider combination (Phase 5)
             try:
-                style_score = self._score_style(response.content) or None
+                from src.engine.services.llm.model_registry import get_model_registry
+
+                registry = get_model_registry()
+                registry.validate_or_raise(candidate, model)
+            except ValueError as e:
+                last_error = e
+                self.logger.error(f"❌ Model validation failed for {candidate}: {e}")
+                continue
+
+            # Check provider availability
+            if not await provider_instance.is_available():
+                last_error = ProviderUnavailableError(f"{candidate} provider not available")
+                self.logger.warning("⚠️ Provider %s unavailable, moving to next fallback", candidate)
+                continue
+
+            try:
+                self.logger.info(
+                    "🤖 V2.1 Routing: %s with %s messages, model: %s",
+                    candidate,
+                    len(messages),
+                    model,
+                )
+
+                # ====================================================================
+                # LLM CALL (Provider-specific logic handled by ProviderAdapterStage)
+                # ====================================================================
+                response, attempt_logs = await self._call_with_resiliency(
+                    candidate,
+                    provider_instance.call_llm,
+                    messages,
+                    model,
+                    **call_kwargs,
+                )
+                attempt_history[candidate] = attempt_logs
+                selected_provider_key = candidate
+                break
+            except ProviderUnavailableError as exc:
+                last_error = exc
+                attempt_history[candidate] = list(getattr(exc, "llm_attempt_logs", []))
+                self.logger.warning(
+                    "⚠️ Provider %s circuit open/unavailable: %s. Trying next fallback...",
+                    candidate,
+                    exc,
+                )
+                continue
+            except Exception as exc:  # noqa: BLE001
+                last_error = exc
+                attempt_history[candidate] = list(getattr(exc, "llm_attempt_logs", []))
+                self.logger.exception(
+                    "❌ Provider %s failed with unexpected error. Trying next fallback...",
+                    candidate,
+                )
+                continue
+
+        if response is None:
+            if last_error:
+                raise last_error
+            raise ProviderUnavailableError("No LLM providers available after fallbacks")
+
+        provider_key = selected_provider_key
+        provider = selected_provider_key
+
+        attempt_summary: List[Dict[str, Any]] = []
+        metadata_is_dict = isinstance(response.metadata, dict)
+        if metadata_is_dict:
+            try:
+                fallback_meta = response.metadata.setdefault("fallback", {})
+                fallback_meta["provider_chain"] = candidate_chain
+                fallback_meta["selected_provider"] = selected_provider_key
+                attempt_summary = [
+                    {
+                        "provider": provider_name,
+                        "attempts": len(logs),
+                        "statuses": [log.status for log in logs],
+                        "latency_ms": [round(log.latency_ms, 2) for log in logs],
+                        "errors": [log.error for log in logs if log.error],
+                    }
+                    for provider_name, logs in attempt_history.items()
+                    if logs
+                ]
+                if attempt_summary:
+                    fallback_meta["attempt_summary"] = attempt_summary
             except Exception:
-                style_score = None
-            # Evaluate style gate
+                self.logger.debug(
+                    "Failed to enrich fallback metadata", exc_info=True
+                )
+
+        initial_provider = candidate_chain[0] if candidate_chain else selected_provider_key
+        fallback_used = (
+            selected_provider_key != initial_provider
+            or any(len(logs) > 1 for logs in attempt_history.values())
+            or len(attempt_history) > 1
+        )
+        if fallback_used:
+            self._observability.record_fallback_chain(
+                initial_provider=initial_provider,
+                chain=candidate_chain,
+                selected=selected_provider_key,
+            )
+            try:
+                stream = get_unified_context_stream()
+                stream.add_event(
+                    ContextEventType.LLM_PROVIDER_FALLBACK,
+                    data={
+                        "initial_provider": initial_provider,
+                        "selected_provider": selected_provider_key,
+                        "attempt_summary": attempt_summary,
+                    },
+                    metadata={
+                        "candidate_chain": candidate_chain,
+                        "last_error": str(last_error) if last_error else None,
+                    },
+                )
+            except Exception:
+                self.logger.debug(
+                    "LLM fallback context event failed to record", exc_info=True
+                )
+
+        if response.metadata is None:
+            try:
+                response.metadata = {}
+                metadata_is_dict = True
+            except Exception:
+                metadata_is_dict = False
+
+        # Style score and gate (Phase 2)
+        try:
+            style_score = self._score_style(response.content) or None
+        except Exception:
+            style_score = None
+        # Evaluate style gate
             try:
                 from src.telemetry.style_gate import evaluate as _eval_style
                 action = _eval_style(style_score, phase=phase)

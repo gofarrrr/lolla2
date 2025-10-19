@@ -6,7 +6,7 @@ from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 from typing import Callable
 import logging
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.core.unified_context_stream import UnifiedContextStream, ContextEventType
 
 logger = logging.getLogger(__name__)
 

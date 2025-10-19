@@ -16,11 +16,11 @@ from fastapi import APIRouter, HTTPException, Depends, WebSocket, WebSocketDisco
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from src.core.hybrid_session_manager import (
+from src.engine.adapters.core.hybrid_session_manager import (
     get_hybrid_session_manager,
 )
 from src.engine.api.transparency_stream_manager import get_transparency_stream_manager
-from src.core.auth_foundation import get_current_user
+from src.engine.adapters.core.auth_foundation import get_current_user
 
 logger = logging.getLogger(__name__)
 

@@ -36,9 +36,9 @@ from src.cognitive_architecture import (
     PromptComplexity,
 )
 from src.integrations.llm_provider import get_llm_provider
-from src.core.circuit_breaker import CircuitBreaker, CircuitBreakerConfig
-from src.core.audit_trail import AuditEventType
-from src.core.context_engineering_optimizer import ContextEngineeringOptimizer
+from src.engine.adapters.core.circuit_breaker import CircuitBreaker, CircuitBreakerConfig
+from src.engine.adapters.core.audit_trail import AuditEventType
+from src.engine.adapters.core.context_engineering_optimizer import ContextEngineeringOptimizer
 from src.engine.monitoring.coordination_detector import CoordinationDetector
 
 logger = logging.getLogger(__name__)

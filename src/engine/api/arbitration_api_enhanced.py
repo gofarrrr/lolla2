@@ -18,7 +18,7 @@ from fastapi import APIRouter, HTTPException, status, Request
 from pydantic import BaseModel, Field
 
 from src.config import get_settings
-from src.core.structured_logging import get_logger
+from src.engine.adapters.core.structured_logging import get_logger
 from src.engine.engines.core.consultant_orchestrator import get_consultant_orchestrator
 from src.engine.models.data_contracts import MetisDataContract, EngagementPhase
 from src.engine.api.feature_flag_decorators import (

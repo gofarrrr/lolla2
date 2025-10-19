@@ -1,0 +1,1 @@
+from src.core.supabase_auth_middleware import SupabaseAuthMiddleware

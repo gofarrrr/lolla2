@@ -35,7 +35,7 @@ from src.engine.core.resilient_llm_client import (
 )
 
 # Import Station 6: ULTRATHINK Adversarial Integrity components
-from src.core.enhanced_devils_advocate_system import (
+from src.engine.adapters.core.enhanced_devils_advocate_system import (
     EnhancedDevilsAdvocateSystem,
     ComprehensiveChallengeResult,
 )
@@ -121,9 +121,9 @@ def get_station5_components() -> tuple[ResearchManager, ResilientLLMClient]:
     if _research_manager is None:
         # Initialize research providers - would need to be imported based on available providers
         # For now, create empty provider list - this would be enhanced with actual providers
-        from src.core.unified_context_stream import UnifiedContextStream
+        from src.engine.adapters.core.unified_context_stream import UnifiedContextStream
 
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
         context_stream = get_unified_context_stream()
         _research_manager = ResearchManager(providers=[], context_stream=context_stream)
         logger.info(

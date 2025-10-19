@@ -19,7 +19,7 @@ from evaluation.run_harness import EvaluationHarness
 # Import CQA components if available
 try:
     from src.engine.agents.quality_rater_agent_v2 import TransparentQualityRater
-    from src.core.contracts.quality import CQA_Result, RIVAScore
+    from src.engine.adapters.core.contracts.quality import CQA_Result, RIVAScore
 
     CQA_AVAILABLE = True
 except ImportError:
@@ -28,7 +28,7 @@ except ImportError:
 
 # Import context stream components
 try:
-    from src.core.unified_context_stream import get_unified_context_stream
+    from src.engine.adapters.core.unified_context_stream import get_unified_context_stream
 
     CONTEXT_STREAM_AVAILABLE = True
 except ImportError:

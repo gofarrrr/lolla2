@@ -9,7 +9,7 @@ from uuid import UUID, uuid4
 from fastapi import HTTPException
 
 # Structured logging (Clarity & Consolidation Sprint)
-from src.core.structured_logging import (
+from src.engine.adapters.core.structured_logging import (
     get_logger,
     LoggingContext,
     set_engagement_context,
@@ -23,18 +23,18 @@ from .mappers import (
 from .websocket import ConnectionManager
 
 try:
-    from src.core.consolidated_neural_lace_orchestrator import (
+    from src.engine.adapters.core.consolidated_neural_lace_orchestrator import (
         get_consolidated_neural_lace_orchestrator,
     )
     from src.engine.models.data_contracts import (
         MetisDataContract,
         create_engagement_initiated_event,
     )
-    from src.core.enhanced_event_bus import MetisEventBus
-    from src.core.comprehensive_data_capture import ComprehensiveDataCapture
+    from src.engine.adapters.core.enhanced_event_bus import MetisEventBus
+    from src.engine.adapters.core.comprehensive_data_capture import ComprehensiveDataCapture
     from src.engine.core.query_clarification_engine import QueryClarificationEngine
-    from src.core.hitl_interaction_manager import HITLInteractionManager
-    from src.core.state_management import DistributedStateManager, StateType
+    from src.engine.adapters.core.hitl_interaction_manager import HITLInteractionManager
+    from src.engine.adapters.core.state_management import DistributedStateManager, StateType
     from src.optimization.cost_tracker import (
         CostOptimizationEngine,
         UsageMetricType,
@@ -43,7 +43,7 @@ try:
     from src.monitoring.performance_validator import PerformanceValidator
 
     # Operation Crystal Day 1: Import contradiction detector
-    from src.core.contradiction_detector import ContradictionDetector
+    from src.engine.adapters.core.contradiction_detector import ContradictionDetector
 
     ENGINES_AVAILABLE = True
 except ImportError:
@@ -119,7 +119,7 @@ class EngagementOrchestrator:
 
         try:
             # P4.5: Initialize complete METIS system with event routing
-            from src.core.metis_system_integration import (
+            from src.engine.adapters.core.metis_system_integration import (
                 create_metis_system,
                 SystemMode,
             )
@@ -148,7 +148,7 @@ class EngagementOrchestrator:
 
             # Operation Synapse: Initialize Context Intelligence Engine
             try:
-                from src.core.context_intelligence_engine import (
+                from src.engine.adapters.core.context_intelligence_engine import (
                     create_context_intelligence_engine,
                 )
 
@@ -167,7 +167,7 @@ class EngagementOrchestrator:
             self.logger.error(f"Failed to initialize METIS system: {str(e)}")
             # Fallback to basic initialization
             try:
-                from src.core.enhanced_event_bus import MetisEventBus
+                from src.engine.adapters.core.enhanced_event_bus import MetisEventBus
 
                 self.event_bus = MetisEventBus()
                 await self.event_bus.initialize()
@@ -179,7 +179,7 @@ class EngagementOrchestrator:
 
                 # Operation Synapse: Initialize Context Intelligence Engine (fallback path)
                 try:
-                    from src.core.context_intelligence_engine import (
+                    from src.engine.adapters.core.context_intelligence_engine import (
                         create_context_intelligence_engine,
                     )
 

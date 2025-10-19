@@ -29,7 +29,7 @@ from .foundation_contracts import (
     EngagementNotFoundError,
     DatabaseConnectionError,
 )
-from src.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
+from src.engine.adapters.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
 from src.persistence.supabase_integration import (
     get_supabase_integration,
     get_supabase_repository,

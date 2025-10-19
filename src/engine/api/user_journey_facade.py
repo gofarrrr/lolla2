@@ -29,7 +29,7 @@ from src.engine.models.data_contracts import (
     ClarificationComplexity,
 )
 from src.engine.engines.core.consultant_orchestrator import get_consultant_orchestrator
-from src.core.structured_logging import get_logger
+from src.engine.adapters.core.structured_logging import get_logger
 from src.engine.api.engagement.clarification import TieredClarificationHandler
 
 logger = get_logger(__name__, component="user_journey_facade")

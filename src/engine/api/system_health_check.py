@@ -242,7 +242,7 @@ class SystemHealthChecker:
         start_time = time.time()
 
         try:
-            from src.core.enhanced_devils_advocate_system import (
+            from src.engine.adapters.core.enhanced_devils_advocate_system import (
                 EnhancedDevilsAdvocateSystem,
             )
 
@@ -374,7 +374,7 @@ class SystemHealthChecker:
         start_time = time.time()
 
         try:
-            from src.core.resilient_llm_client import get_resilient_llm_client
+            from src.engine.adapters.core.resilient_llm_client import get_resilient_llm_client
 
             client = get_resilient_llm_client()
 
@@ -472,7 +472,7 @@ class SystemHealthChecker:
         start_time = time.time()
 
         try:
-            from src.core.performance_optimizer import get_performance_optimizer
+            from src.engine.adapters.core.performance_optimizer import get_performance_optimizer
 
             optimizer = get_performance_optimizer()
             metrics = optimizer.get_performance_metrics()

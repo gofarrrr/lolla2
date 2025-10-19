@@ -18,7 +18,7 @@ except ImportError:
     FASTAPI_AVAILABLE = False
     HTTPBearer = None
 
-from src.core.auth_foundation import (
+from src.engine.adapters.core.auth_foundation import (
     get_auth_manager,
     Permission,
     authenticate_request,

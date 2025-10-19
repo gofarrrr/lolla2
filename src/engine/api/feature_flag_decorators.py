@@ -23,12 +23,12 @@ from uuid import UUID
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 
-from src.core.feature_flags import (
+from src.engine.adapters.core.feature_flags import (
     FeatureFlag,
     get_feature_flag_service,
     get_experiment_group,
 )
-from src.core.structured_logging import get_logger
+from src.engine.adapters.core.structured_logging import get_logger
 
 logger = get_logger(__name__, component="feature_flag_decorators")
 

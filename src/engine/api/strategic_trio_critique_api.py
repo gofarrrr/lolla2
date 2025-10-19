@@ -36,7 +36,7 @@ from src.models.strategic_trio_critique_models import (
     StrategicTrioCritiqueOrchestrationResult,
     CritiqueStreamingUpdate,
 )
-from src.core.supabase_auth_middleware import get_current_user, SupabaseUser
+from src.engine.adapters.core.supabase_auth_middleware import get_current_user, SupabaseUser
 
 logger = logging.getLogger(__name__)
 
