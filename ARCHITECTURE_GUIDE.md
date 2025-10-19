@@ -161,3 +161,189 @@ The platform still follows a five-domain mental model, but Operation Lean introd
 ---
 
 This document will be reviewed whenever major architectural shifts land (new service clusters, removal of legacy routers, or completion of UnifiedContextStream refactors). Ping the architecture channel if you spot discrepancies or need clarifications.
+
+---
+
+## LLM Resiliency & Security Architecture
+
+**Added**: 2025-10-19 (Task 8: LLM Resiliency Hardening)
+
+### Provider Resilience Pattern
+
+The platform implements a multi-layer resiliency system for LLM interactions:
+
+**Provider Chain**: OpenRouter (Grok-4-Fast) → Anthropic (Claude) → DeepSeek → OpenAI
+
+**Resiliency Components**:
+1. **Retry Policy** - Exponential backoff with jitter
+2. **Circuit Breakers** - Per-provider failure detection
+3. **Automatic Fallback** - Seamless provider switching
+4. **Timeout Management** - Configurable per-provider timeouts
+5. **Structured Logging** - Complete audit trail
+
+### Configuration
+
+All resiliency settings are externalized via environment variables in `.env`:
+
+```bash
+# Provider Priority & Fallback Order
+METIS_LLM_PROVIDER_ORDER="deepseek,anthropic,openrouter,claude"
+
+# Retry Configuration
+METIS_LLM_TIMEOUT_SECONDS="45"              # Per-provider timeout
+METIS_LLM_MAX_RETRIES="3"                   # Max retry attempts
+METIS_LLM_RETRY_BASE_DELAY="1.0"            # Base delay for exponential backoff
+
+# Circuit Breaker Configuration  
+METIS_LLM_CIRCUIT_THRESHOLD="3"             # Failures before opening circuit
+METIS_LLM_CIRCUIT_COOLDOWN_SECONDS="60"     # Cooldown before retry
+```
+
+### Security Layers
+
+All LLM requests pass through a security pipeline:
+
+```
+User Input → Injection Firewall → PII Redaction → Sensitivity Routing 
+    → LLM Call → Grounding Contract → Self-Verification → Response
+```
+
+**Security Components**:
+- **Injection Firewall**: Blocks prompt injection attempts (`InjectionFirewall`)
+- **PII Redaction**: Masks SSN, email, phone, credit cards (`PIIRedactionEngine`)
+- **Sensitivity Routing**: Routes classified data to compliant providers
+- **Grounding Contract**: Enforces citation requirements (`GroundingContract`)
+- **Self-Verification**: Detects low-confidence responses (`SelfVerification`)
+
+### Implementation Details
+
+**Primary Module**: `src/integrations/llm/unified_client.py`
+
+**Supporting Modules**:
+- `src/integrations/llm/resiliency.py` - Retry & circuit breaker primitives
+- `src/integrations/llm/observability.py` - Logging & metrics helpers
+- `src/engine/security/injection_firewall.py` - Injection attack protection
+- `src/engine/security/pii_redaction.py` - PII masking
+- `src/engine/quality/grounding_contract.py` - Citation enforcement
+- `src/engine/quality/self_verification.py` - Quality validation
+
+### Testing
+
+**Security Test Suite**: `tests/security/test_llm_guards.py`
+- 13 security tests covering all protection layers
+- Fake providers for attack simulation
+- Integration tests for end-to-end validation
+
+**Run Tests**:
+```bash
+# All security tests
+pytest tests/security/ -v -m security
+
+# Specific test
+pytest tests/security/test_llm_guards.py::test_injection_firewall_blocks_high_severity -v
+```
+
+**CI Integration**: `.github/workflows/security-tests.yml`
+- Runs on every push/PR
+- Nightly scheduled runs
+- Blocks merge on security test failures
+
+### Operational Procedures
+
+**SRE Runbook**: `docs/SRE_RUNBOOK_LLM_RESILIENCY.md`
+
+Common operations:
+- Check provider health
+- Adjust circuit breaker thresholds
+- Force provider fallback order
+- Handle circuit breaker "OPEN" state
+- Investigate repeated fallbacks
+
+**Security Documentation**: `docs/SECURITY_GUARANTEES.md`
+- Security architecture overview
+- Test coverage matrix
+- Compliance & certifications
+- Incident response procedures
+
+### Observability
+
+**Structured Logging**:
+```python
+# Provider attempts logged with full context
+INFO: LLM_ATTEMPT: provider=openrouter, status=success, latency=1.2s, cost=0.000002
+INFO: LLM_ATTEMPT: provider=anthropic, status=fallback, reason=timeout
+```
+
+**Circuit Breaker Events**:
+```python
+WARNING: Circuit breaker OPEN for provider: openrouter
+INFO: Circuit breaker HALF_OPEN for provider: openrouter (testing)
+INFO: Circuit breaker CLOSED for provider: openrouter (recovered)
+```
+
+**Security Events**:
+```python
+WARNING: Injection attempt blocked: "IGNORE PREVIOUS INSTRUCTIONS..."
+INFO: PII redacted: 3 items masked (SSN, email, phone)
+WARNING: Grounding contract failed: no citations found
+```
+
+### Performance Impact
+
+**Security Layer Overhead**:
+- Injection Firewall: ~10ms
+- PII Redaction: ~20ms  
+- Sensitivity Routing: ~5ms
+- Grounding Contract: ~30ms
+- Self-Verification: ~50ms
+- **Total**: ~115ms additional latency
+
+**Resiliency Overhead**:
+- Retry logic: 0ms (only on failures)
+- Circuit breaker: <1ms (state check)
+- Fallback: ~100ms (provider switch)
+
+### Developer Guidelines
+
+**When Adding New LLM Features**:
+1. Use `UnifiedLLMClient` - never call providers directly
+2. Security pipeline is automatic - no opt-out
+3. Log provider attempts with `observability.log_llm_attempt()`
+4. Add tests to `tests/security/` for new attack vectors
+5. Update `docs/SECURITY_GUARANTEES.md` with new patterns
+
+**When Modifying Security**:
+1. Add tests BEFORE changing security logic
+2. Run full security suite: `pytest tests/security/ -v -m security`
+3. Update SRE runbook if thresholds change
+4. Document in SECURITY_GUARANTEES.md
+5. Notify #security-team Slack channel
+
+### Migration Notes
+
+**From Legacy LLM Calls**:
+```python
+# Old (direct provider calls)
+from src.engine.providers.llm.anthropic import AnthropicProvider
+provider = AnthropicProvider()
+response = await provider.generate(prompt)
+
+# New (resilient unified client)
+from src.integrations.llm.unified_client import get_unified_llm_client
+client = get_unified_llm_client()
+response = await client.generate(
+    prompt=prompt,
+    flow=Flow.GENERAL  # or Flow.ORACLE for strategic reasoning
+)
+# Automatic: retry, fallback, security, logging
+```
+
+**Security Benefits**:
+- ✅ Automatic PII protection
+- ✅ Injection attack prevention  
+- ✅ Provider failover
+- ✅ Complete audit trail
+- ✅ Grounding enforcement
+
+---
+

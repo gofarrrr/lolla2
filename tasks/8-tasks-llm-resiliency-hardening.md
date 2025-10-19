@@ -50,23 +50,23 @@ Commands:
 - [x] 4.4 Provide CLI or script to summarize log output for operators
 
 ### 5.0 Security Regression Suite
-- [ ] 5.1 Build fake provider(s) to simulate malicious prompts/responses  
-- [x] 5.2 Write tests ensuring injection firewall blocks high-risk prompts  
-- [x] 5.3 Verify PII redaction removes sensitive content before sending to provider  
-- [x] 5.4 Validate grounding contract rejects responses breaking schema  
-- [ ] 5.5 Ensure self-verification path triggers retries when confidence low  
-- [ ] 5.6 Add pytest marker `security` and run in CI nightly
+- [x] 5.1 Build fake provider(s) to simulate malicious prompts/responses
+- [x] 5.2 Write tests ensuring injection firewall blocks high-risk prompts
+- [x] 5.3 Verify PII redaction removes sensitive content before sending to provider
+- [x] 5.4 Validate grounding contract rejects responses breaking schema
+- [x] 5.5 Ensure self-verification path triggers retries when confidence low
+- [x] 5.6 Add pytest marker `security` and run in CI nightly
 
 ### 6.0 Integration & Load Testing
-- [ ] 6.1 Develop integration harness simulating provider outages (503/429, timeouts)  
-- [ ] 6.2 Validate fallback order executes correctly and respects retry limits  
-- [ ] 6.3 Measure latency improvements vs baseline; record in report  
+- [x] 6.1 Develop integration harness simulating provider outages (503/429, timeouts)
+- [x] 6.2 Validate fallback order executes correctly and respects retry limits
+- [ ] 6.3 Measure latency improvements vs baseline; record in report
 - [ ] 6.4 Add regression tests ensuring fallback metadata surfaces to callers
 
 ### 7.0 Documentation & Rollout
-- [ ] 7.1 Update `ARCHITECTURE_GUIDE.md` with resiliency workflow and configuration table  
-- [ ] 7.2 Create runbook for SRE (how to adjust thresholds, override circuit breaker)  
-- [ ] 7.3 Document security guarantees and test suite instructions  
+- [x] 7.1 Update `ARCHITECTURE_GUIDE.md` with resiliency workflow and configuration table
+- [x] 7.2 Create runbook for SRE (how to adjust thresholds, override circuit breaker)
+- [x] 7.3 Document security guarantees and test suite instructions
 - [ ] 7.4 Communicate changes to engineering + support teams (Slack + release notes)
 
 ### 8.0 Release & Monitoring
@@ -84,9 +84,9 @@ Commands:
 ---
 
 ## Deliverables Checklist
-- [x] Configurable retry + circuit breaker logic  
-- [x] Structured logging/metrics for provider attempts  
-- [ ] Security regression tests (PII, injection, grounding) in CI  
-- [ ] Documentation and runbook updated  
-- [ ] Observed latency/fallback improvements validated in staging & prod  
-- [ ] Post-mortem completed and filed
+- [x] Configurable retry + circuit breaker logic
+- [x] Structured logging/metrics for provider attempts
+- [x] Security regression tests (PII, injection, grounding) in CI
+- [x] Documentation and runbook updated
+- [ ] Observed latency/fallback improvements validated in staging & prod (requires production deployment)
+- [ ] Post-mortem completed and filed (post-deployment)
