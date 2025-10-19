@@ -14,7 +14,7 @@ import numpy as np
 # Import our new contracts
 
 # Import UnifiedContextStream for audit trail
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated to adapter, ContextEventType
 
 # Project Semantic Core: Import sentence transformer for semantic search
 try:

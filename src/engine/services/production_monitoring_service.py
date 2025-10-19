@@ -24,7 +24,8 @@ from collections import defaultdict, deque
 from enum import Enum
 
 # Core METIS imports
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+# Migrated to use adapter for dependency inversion
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType
 from src.services.performance_optimization_service import (
     PerformanceOptimizationService,
 )

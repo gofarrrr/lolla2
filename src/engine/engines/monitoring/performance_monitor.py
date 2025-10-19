@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from ..contracts import PerformanceMetrics, HealthStatus
 
 # Import UnifiedContextStream for audit trail
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated to adapter, ContextEventType
 
 # Benchmarking dashboard integration (optional)
 try:

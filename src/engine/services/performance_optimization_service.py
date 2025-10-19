@@ -29,7 +29,8 @@ from contextlib import asynccontextmanager
 import weakref
 
 # Core METIS imports
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+# Migrated to use adapter for dependency inversion
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType
 
 # Database and external service imports
 try:

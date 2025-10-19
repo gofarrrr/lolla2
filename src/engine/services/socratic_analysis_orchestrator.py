@@ -25,7 +25,8 @@ from dataclasses import dataclass
 # Core domain models
 from src.engine.engines.core.socratic_cognitive_forge import UserResponse, EnhancedQuery
 from src.integrations.llm.unified_client import UnifiedLLMClient
-from src.core.unified_context_stream import UnifiedContextStream
+# Migrated to use adapter for dependency inversion
+from src.engine.adapters.context_stream import UnifiedContextStream
 
 # Import existing API models for compatibility
 from src.engine.api.socratic_forge_api import (

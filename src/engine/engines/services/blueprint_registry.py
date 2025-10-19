@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 # Glass-Box Integration - CRITICAL
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated to adapter, ContextEventType
 
 # Database integration
 try:
