@@ -25,7 +25,7 @@ from uuid import uuid4
 
 # Core METIS imports
 try:
-    from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+    from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated, ContextEventType
     from src.engine.engines.services.blueprint_registry import (
         BlueprintRegistry,
         ConsultantBlueprint,

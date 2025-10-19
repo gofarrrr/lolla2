@@ -502,7 +502,7 @@ class GroundingContract:
 
         # Log to glass-box
         try:
-            from src.core.unified_context_stream import (
+            from src.engine.adapters.context_stream import (  # Migrated
                 get_unified_context_stream,
                 ContextEventType,
             )

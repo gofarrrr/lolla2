@@ -12,7 +12,7 @@ from datetime import datetime
 from dataclasses import dataclass
 
 # V5 Integration
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType  # Migrated
 from src.engine.core.tool_decision_framework import (
     ToolSelectionDecision,
     get_tool_decision_framework,

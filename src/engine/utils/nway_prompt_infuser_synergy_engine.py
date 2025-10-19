@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from supabase import Client
 
 # Import glass-box evidence collection
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream  # Migrated, ContextEventType
 
 # Import unified LLM client for meta-cognitive analysis
 try:
