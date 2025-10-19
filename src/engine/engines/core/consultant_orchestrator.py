@@ -42,8 +42,7 @@ from ..monitoring.performance_monitor import (
 )
 
 # V4 Enhancement: UnifiedContextStream and ToolDecisionFramework integration
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
-from src.core.incremental_context_manager import IncrementalContextManager
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType, IncrementalContextManager  # Migrated
 
 # Supabase for database operations
 try:

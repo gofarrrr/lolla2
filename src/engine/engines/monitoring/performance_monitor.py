@@ -63,7 +63,7 @@ class PerformanceMonitoringService:
 
     def __init__(self, context_stream: Optional[UnifiedContextStream] = None):
         """Initialize the performance monitoring service"""
-        from src.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
+        from src.engine.adapters.context_stream import get_unified_context_stream, UnifiedContextStream  # Migrated
         self.context_stream = context_stream or get_unified_context_stream()
 
         # Initialize benchmarking dashboard if available

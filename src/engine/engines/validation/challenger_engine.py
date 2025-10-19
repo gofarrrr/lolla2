@@ -70,7 +70,7 @@ class BaseChallenger:
         self.name = name
         self.logger = logger.with_component(f"challenger_{name}")
         self.prompt_version = PROMPT_VERSION
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.context_stream import get_unified_context_stream  # Migrated
         self.context_stream = get_unified_context_stream()
 
     async def challenge(self, input_data: Dict[str, Any]) -> Dict[str, Any]:

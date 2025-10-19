@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 # Glass-Box Integration - CRITICAL for transparency
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType  # Migrated
 from src.engine.core.tool_decision_framework import ToolDecisionFramework
 
 # Extracted Services - New Architecture
@@ -502,7 +502,7 @@ def create_optimal_consultant_orchestrator(
     """
 
     # Create core Glass-Box infrastructure
-    from src.core.unified_context_stream import get_unified_context_stream
+    from src.engine.adapters.context_stream import get_unified_context_stream  # Migrated
     context_stream = get_unified_context_stream()
 
     # Create extracted services with dependency injection

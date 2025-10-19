@@ -23,8 +23,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
-from src.core.incremental_context_manager import IncrementalContextManager
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType, IncrementalContextManager  # Migrated
 from src.engine.engines.core.optimal_consultant_engine_compat import (
     OptimalConsultantEngine,
 )

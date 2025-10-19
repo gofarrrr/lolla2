@@ -29,7 +29,7 @@ from src.engine.engines.core.optimal_consultant_orchestrator import (
 # Import the correct contract with selected_consultants
 from src.engine.engines.contracts import OptimalEngagementResult, ConsultantCandidate, ConsultantRole
 from src.engine.engines.services.blueprint_registry import ConsultantBlueprint
-from src.core.unified_context_stream import ContextEventType
+from src.engine.adapters.context_stream import ContextEventType  # Migrated
 
 # Backward compatibility interfaces
 try:

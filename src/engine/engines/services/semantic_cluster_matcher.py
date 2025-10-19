@@ -50,7 +50,7 @@ class SemanticClusterMatchingService:
     ):
         """Initialize the semantic cluster matching service"""
         self.supabase = supabase_client
-        from src.core.unified_context_stream import get_unified_context_stream, UnifiedContextStream
+        from src.engine.adapters.context_stream import get_unified_context_stream, UnifiedContextStream  # Migrated
         self.context_stream = context_stream or get_unified_context_stream()
 
         # Initialize semantic model if dependencies are available

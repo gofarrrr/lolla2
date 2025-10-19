@@ -87,7 +87,7 @@ class SocraticAnalysisOrchestrator:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.llm_client = UnifiedLLMClient()
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.context_stream import get_unified_context_stream  # Migrated
         self.context_stream = get_unified_context_stream()
 
     async def orchestrate_complete_analysis(

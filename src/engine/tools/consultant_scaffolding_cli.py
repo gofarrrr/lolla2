@@ -54,7 +54,7 @@ class ConsultantScaffoldingCLI:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.context_stream import get_unified_context_stream  # Migrated
         self.context_stream = get_unified_context_stream() if DEPENDENCIES_AVAILABLE else None
         self.blueprint_registry: Optional[BlueprintRegistry] = None
         self.nway_service: Optional[NWaySelectionService] = None

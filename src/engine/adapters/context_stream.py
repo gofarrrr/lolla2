@@ -7,6 +7,7 @@ from src.core.unified_context_stream import (
     create_new_context_stream,
     get_unified_context_stream,
 )
+from src.core.incremental_context_manager import IncrementalContextManager
 from src.interfaces import ContextStream
 
 __all__ = [
@@ -14,6 +15,7 @@ __all__ = [
     "ContextEvent",
     "ContextEventType",
     "UnifiedContextStream",
+    "IncrementalContextManager",
     "get_context_stream",
     "get_unified_context_stream",
     "create_new_context_stream",

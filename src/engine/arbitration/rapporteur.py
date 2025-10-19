@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 
 from .models import ConsultantOutput, ConsultantRole
 from src.integrations.llm_provider import get_unified_llm_client
-from src.core.unified_context_stream import UnifiedContextStream, ContextEventType
+from src.engine.adapters.context_stream import UnifiedContextStream, ContextEventType  # Migrated
 
 logger = logging.getLogger(__name__)
 
@@ -159,7 +159,7 @@ class Rapporteur:
         self.version = "1.0.0"
         self.initialization_time = datetime.now()
         self.llm_provider = get_unified_llm_client()
-        from src.core.unified_context_stream import get_unified_context_stream
+        from src.engine.adapters.context_stream import get_unified_context_stream  # Migrated
         self.context_stream = get_unified_context_stream()
 
         # The Rapporteur Prompt - Critical Intellectual Property for Context Preservation

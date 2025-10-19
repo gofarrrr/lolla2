@@ -10,7 +10,7 @@ from datetime import datetime
 from dataclasses import dataclass
 
 # Import UnifiedContextStream for event types
-from src.core.unified_context_stream import ContextEvent, ContextEventType
+from src.engine.adapters.context_stream import ContextEvent, ContextEventType  # Migrated
 
 logger = logging.getLogger(__name__)
 

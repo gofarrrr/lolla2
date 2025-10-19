@@ -37,7 +37,7 @@ try:
         MetricType,
         ComponentType,
     )
-    from src.core.unified_context_stream import (
+    from src.engine.adapters.context_stream import (  # Migrated
         UnifiedContextStream,
         ContextEventType,
         get_unified_context_stream,
