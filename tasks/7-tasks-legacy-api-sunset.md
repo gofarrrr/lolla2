@@ -84,10 +84,10 @@ Commands:
 ---
 
 ## Deliverables Checklist
-- [ ] Updated `DEPRECATION_PLAN.md` with traffic, owners, target dates  
-- [ ] Deprecation headers + logging live in production  
-- [ ] Parity tests covering migrated routes (CI enforced)  
-- [ ] Legacy traffic consistently <5% for 30 days  
-- [ ] Legacy stack removed from repository  
-- [ ] Documentation & change logs updated  
-- [ ] Retrospective outcomes shared with stakeholders
+- [x] Updated `DEPRECATION_PLAN.md` with traffic, owners, target dates
+- [ ] Deprecation headers + logging live in production (requires deployment)
+- [x] Parity tests covering migrated routes (CI enforced) - tests/api/test_route_parity.py
+- [ ] Legacy traffic consistently <5% for 30 days (not yet live/no traffic)
+- [ ] Legacy stack removed from repository (pending traffic migration)
+- [x] Documentation & change logs updated (DEPRECATION_PLAN.md, ARCHITECTURE_GUIDE.md)
+- [ ] Retrospective outcomes shared with stakeholders (post-sunset)

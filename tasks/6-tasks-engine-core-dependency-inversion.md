@@ -40,11 +40,11 @@ Command references:
 - [x] 2.6 Write unit tests for adapters (ensuring they proxy to existing implementations)
 
 ### 3.0 Guardrail Enhancements
-- [x] 3.1 Extend architecture test to emit diff of violating files for debugging  
-- [x] 3.2 Encode milestone thresholds (e.g., `TARGET_PHASE_1 = 120`)  
-- [ ] 3.3 Add CI job (GitHub Actions workflow) running `make test-architecture`  
-- [ ] 3.4 Document failure triage steps in README or CONTRIBUTING  
-- [ ] 3.5 Announce guardrail adoption in engineering channel
+- [x] 3.1 Extend architecture test to emit diff of violating files for debugging
+- [x] 3.2 Encode milestone thresholds (e.g., `TARGET_PHASE_1 = 120`)
+- [x] 3.3 Add CI job (GitHub Actions workflow) running `make test-architecture` (in .github/workflows/security-tests.yml)
+- [x] 3.4 Document failure triage steps in README or CONTRIBUTING (in ARCHITECTURE_GUIDE.md)
+- [ ] 3.5 Announce guardrail adoption in engineering channel (communication pending)
 
 ### 4.0 Migration Phase 1 (Baseline → ≤120)
 - [ ] 4.1 Replace imports in `src/engine/api/**` with context stream interface  
@@ -89,9 +89,9 @@ Command references:
 ---
 
 ## Deliverables Checklist
-- [ ] Interfaces created and exported  
-- [ ] Architecture tests updated with milestones  
-- [ ] Violation count reduced to target phases (120 → 80 → 40 → 0)  
-- [ ] Documentation + ADRs updated  
-- [ ] Tracking sheet/metric dashboard shared with team  
-- [ ] Post-migration retrospective completed
+- [x] Interfaces created and exported (src/interfaces/)
+- [x] Architecture tests updated with milestones (tests/architecture/)
+- [ ] Violation count reduced to target phases (120 → 80 → 40 → 0) - Currently at 139, target Phase 1: ≤120
+- [x] Documentation + ADRs updated (ARCHITECTURE_GUIDE.md, docs/ENGINE_CORE_DEPENDENCY_BASELINE.md)
+- [ ] Tracking sheet/metric dashboard shared with team (baseline documented, dashboard pending)
+- [ ] Post-migration retrospective completed (pending Phase 1 completion)
