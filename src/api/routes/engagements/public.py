@@ -40,6 +40,7 @@ from .models import (
     EngagementStatusResponse,
     QuestionsResponse,
     SubmitAnswersRequest,
+    MECEStructureFeedback,
     OutcomeReportRequest,
     EngagementReportResponse,
     AnsweredQuestion,
@@ -216,6 +217,8 @@ async def start_engagement(
             _total_stages = total_stages_for_ui()
         except Exception:
             _total_stages = 8
+
+        logger.info(f"🔍 DEBUG: engagement_request.interactive_mode = {engagement_request.interactive_mode}")
 
         active_engagements[trace_id] = {
             "trace_id": trace_id,
@@ -638,6 +641,152 @@ async def submit_answers(
     except Exception as e:
         logger.error(f"❌ Failed to submit answers: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to submit answers: {str(e)}")
+
+
+@router.get("/{trace_id}/mece-review", response_model=Dict[str, Any])
+async def get_mece_review(trace_id: str) -> Dict[str, Any]:
+    """
+    Get MECE framework review data for validation.
+
+    Returns structured MECE review with integrity checks, cost estimates,
+    and validation triggers for user steering.
+    """
+    try:
+        # Check if engagement exists
+        if trace_id not in active_engagements:
+            raise HTTPException(status_code=404, detail="Engagement not found")
+
+        engagement = active_engagements[trace_id]
+
+        # Check if engagement is paused for MECE validation
+        status = engagement.get("status")
+        if status != "PAUSED_FOR_MECE_VALIDATION":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Engagement is not paused for MECE validation. Current status: {status}"
+            )
+
+        # Return the cached MECE review data
+        mece_review = engagement.get("mece_review")
+        if not mece_review:
+            raise HTTPException(
+                status_code=500,
+                detail="MECE review data not available"
+            )
+
+        logger.info(f"📊 Returning MECE review for trace {trace_id}")
+
+        return {
+            "trace_id": trace_id,
+            "status": "paused_for_mece_validation",
+            "mece_review": mece_review,
+            "checkpoint_id": engagement.get("paused_checkpoint_id"),
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to get MECE review: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get MECE review: {str(e)}")
+
+
+@router.post("/{trace_id}/validate-mece", response_model=Dict[str, Any])
+async def validate_mece_structure(
+    trace_id: str,
+    feedback: MECEStructureFeedback,
+    background_tasks: BackgroundTasks,
+    http_request: Request,
+) -> Dict[str, Any]:
+    """
+    Submit MECE validation feedback and resume pipeline.
+
+    Allows user to:
+    - Approve structure as-is (quick continue)
+    - Adjust priorities, add focus areas, flag assumptions
+    - Add/remove/merge dimensions
+    - Set analysis depth per dimension
+    """
+    try:
+        # Check if engagement exists
+        if trace_id not in active_engagements:
+            raise HTTPException(status_code=404, detail="Engagement not found")
+
+        engagement = active_engagements[trace_id]
+
+        # Check if engagement is paused for MECE validation
+        status = engagement.get("status")
+        if status != "PAUSED_FOR_MECE_VALIDATION":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Engagement is not paused for MECE validation. Current status: {status}"
+            )
+
+        logger.info(f"📊 Received MECE validation feedback for trace {trace_id}")
+        logger.info(f"   Approved: {feedback.approved}")
+
+        # Store feedback in engagement for traceability
+        engagement["mece_feedback"] = feedback.dict()
+        engagement["status"] = "RESUMING"
+
+        # Get checkpoint info
+        checkpoint_id = engagement.get("paused_checkpoint_id")
+        if not checkpoint_id:
+            raise HTTPException(
+                status_code=500,
+                detail="No checkpoint found to resume from"
+            )
+
+        database_service: Optional[DatabaseService] = getattr(
+            http_request.app.state, "database_service", None
+        )
+
+        # Update database with RESUMING status
+        if database_service:
+            try:
+                await database_service.upsert_engagement_status_async({
+                    "trace_id": trace_id,
+                    "status": "RESUMING",
+                    "current_stage": engagement.get("current_stage"),
+                    "stage_number": engagement.get("stage_number"),
+                    "progress_percentage": engagement.get("progress_percentage", 0.0),
+                    "user_id": engagement.get("user_id"),
+                    "session_id": engagement.get("session_id"),
+                })
+                logger.info(f"✅ Database updated with RESUMING status after MECE validation")
+            except Exception as e:
+                logger.error(f"⚠️ Failed to update database status (non-blocking): {e}")
+
+        # Build enhancement context with MECE feedback
+        enhancement_context = {
+            "mece_approved": feedback.approved,
+            "mece_feedback": feedback.dict(),
+            **(engagement.get("enhancement_context") or {}),  # Preserve previous context (e.g., answered_questions)
+        }
+
+        # Resume pipeline in background
+        background_tasks.add_task(
+            resume_pipeline_with_mece_feedback,
+            trace_id,
+            checkpoint_id,
+            enhancement_context,
+            engagement.get("user_id"),
+            database_service,
+        )
+
+        logger.info(f"✅ Pipeline resumption initiated after MECE validation for trace {trace_id}")
+
+        return {
+            "trace_id": trace_id,
+            "status": "resumed",
+            "message": "Pipeline execution resumed with MECE validation",
+            "approved": feedback.approved,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to validate MECE structure: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to validate MECE structure: {str(e)}")
 
 
 def flatten_report_for_frontend(report_data: Dict[str, Any], trace_id: str) -> Dict[str, Any]:
@@ -1286,25 +1435,36 @@ async def execute_pipeline_background(
 
     Refactored with helper methods to reduce complexity. CC ≤ 9
     """
+    logger.error(f"🔍 --- DEBUG: execute_pipeline_background CALLED --- Trace ID: {trace_id}")
+    logger.error(f"🔍 --- DEBUG: Function params - user_query={user_query[:50]}..., interactive_mode will be read from active_engagements")
+
     try:
+        logger.error(f"🔍 --- DEBUG: INSIDE TRY BLOCK --- Trace ID: {trace_id}")
         logger.info(f"🔄 Starting background pipeline execution - Trace ID: {trace_id}")
 
         # Build enhancement context
+        logger.error(f"🔍 --- DEBUG: Building enhancement context --- Trace ID: {trace_id}")
         enhancement_context = _build_enhancement_context_from_questions(
             answered_questions, research_questions, quality_target
         )
+        logger.error(f"🔍 --- DEBUG: Enhancement context built --- Trace ID: {trace_id}")
 
         # Update status to RUNNING
         active_engagements[trace_id]["status"] = "RUNNING"
+        logger.error(f"🔍 --- DEBUG: Status set to RUNNING --- Trace ID: {trace_id}")
 
         # Initialize services
+        logger.error(f"🔍 --- DEBUG: Initializing pipeline services --- Trace ID: {trace_id}")
         db_service, checkpoint_service = _initialize_pipeline_services(database_service)
+        logger.error(f"🔍 --- DEBUG: Services initialized --- Trace ID: {trace_id}")
 
         # Create orchestrator with status callback
+        logger.error(f"🔍 --- DEBUG: BEFORE StatefulPipelineOrchestrator instantiation --- Trace ID: {trace_id}")
         orchestrator = StatefulPipelineOrchestrator(
             checkpoint_service=checkpoint_service,
             status_callback=_create_status_update_callback(trace_id, db_service)
         )
+        logger.error(f"🔍 --- DEBUG: AFTER StatefulPipelineOrchestrator instantiation SUCCESS --- Trace ID: {trace_id}")
 
         # Prepare execution parameters
         trace_id_uuid = UUID(trace_id)
@@ -1335,6 +1495,12 @@ async def execute_pipeline_background(
         logger.info(f"✅ Pipeline execution completed - Trace ID: {trace_id}")
 
     except Exception as e:
+        logger.error(f"🔍 --- DEBUG: EXCEPTION CAUGHT IN execute_pipeline_background --- Trace ID: {trace_id}")
+        logger.error(f"🔍 --- DEBUG: Exception type: {type(e).__name__}")
+        logger.error(f"🔍 --- DEBUG: Exception message: {str(e)}")
+        import traceback
+        logger.error(f"🔍 --- DEBUG: Full traceback:\n{traceback.format_exc()}")
+
         logger.error(f"❌ Pipeline execution failed - Trace ID: {trace_id}, Error: {e}")
 
         active_engagements[trace_id].update({
@@ -1439,9 +1605,14 @@ async def resume_pipeline_with_answers(
             except (ValueError, AttributeError) as e:
                 logger.warning(f"⚠️ Invalid user_id format: {user_id}, proceeding without user_id")
 
+        # Retrieve original query from engagement data (needed for subsequent stages)
+        original_query = active_engagements[trace_id].get("user_query", "")
+        logger.info(f"🔍 Resuming with original_query: {original_query[:100]}...")
+
         # Resume from checkpoint with user answers
         pipeline_state = await orchestrator.execute_pipeline(
             trace_id=trace_id_uuid,
+            initial_query=original_query,  # Pass original query for subsequent stages
             resume_from_checkpoint=UUID(checkpoint_id),
             user_id=user_id_uuid,
             enhancement_context=enhancement_context,
@@ -1490,6 +1661,130 @@ async def resume_pipeline_with_answers(
 
     except Exception as e:
         logger.error(f"❌ Pipeline resumption failed - Trace ID: {trace_id}, Error: {e}")
+
+        # Mark as failed
+        active_engagements[trace_id].update({
+            "status": "FAILED",
+            "error": str(e),
+            "completed_at": datetime.now()
+        })
+
+
+async def resume_pipeline_with_mece_feedback(
+    trace_id: str,
+    checkpoint_id: str,
+    enhancement_context: Dict[str, Any],
+    user_id: Optional[str],
+    database_service: Optional[DatabaseService] = None,
+) -> None:
+    """
+    Resume pipeline execution after MECE validation feedback.
+
+    Similar to resume_pipeline_with_answers but for second pause point.
+    """
+    try:
+        logger.info(f"🔄 Resuming pipeline after MECE validation - Trace ID: {trace_id}")
+        mece_approved = enhancement_context.get("mece_approved", False)
+        logger.info(f"📊 MECE approved: {mece_approved}")
+
+        # Update engagement status
+        active_engagements[trace_id]["status"] = "RUNNING"
+
+        # Initialize CheckpointService (database-backed)
+        context_stream = get_unified_context_stream()
+        db_service = database_service or DatabaseService()
+        repo = SupabaseCheckpointRepository(db_service, context_stream)
+        rev = V1RevisionService(repo, context_stream)
+        checkpoint_service = CheckpointService(checkpoint_repo=repo, revision_service=rev)
+
+        # Real-time status update callback
+        def update_frontend_status(stage_name: str, stage_num: int, progress: float):
+            """Callback function to update frontend status as pipeline progresses"""
+            active_engagements[trace_id].update({
+                "current_stage": stage_name,
+                "stage_number": stage_num,
+                "progress_percentage": progress,
+                "status": "RUNNING"
+            })
+            logger.info(f"📡 Frontend status updated: Stage {stage_num}/7 - {stage_name} ({progress}%)")
+
+            # Also write to database (non-blocking)
+            try:
+                engagement = active_engagements.get(trace_id, {})
+                db_service.upsert_engagement_status({
+                    "trace_id": trace_id,
+                    "status": "RUNNING",
+                    "current_stage": stage_name,
+                    "stage_number": stage_num,
+                    "progress_percentage": progress,
+                    "user_id": engagement.get("user_id"),
+                    "session_id": engagement.get("session_id"),
+                })
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to update database status (non-blocking): {e}")
+
+        # Initialize orchestrator with status callback
+        orchestrator = StatefulPipelineOrchestrator(
+            checkpoint_service=checkpoint_service,
+            status_callback=update_frontend_status
+        )
+
+        # Resume pipeline from checkpoint
+        trace_id_uuid = UUID(trace_id)
+        user_id_uuid = None
+        if user_id and user_id.strip():
+            try:
+                user_id_uuid = UUID(user_id.strip())
+            except (ValueError, AttributeError) as e:
+                logger.warning(f"⚠️ Invalid user_id format: {user_id}, proceeding without user_id")
+
+        # Retrieve original query from engagement data
+        original_query = active_engagements[trace_id].get("user_query", "")
+        logger.info(f"🔍 Resuming with original_query: {original_query[:100]}...")
+
+        # Resume from checkpoint with MECE feedback
+        pipeline_state = await orchestrator.execute_pipeline(
+            trace_id=trace_id_uuid,
+            initial_query=original_query,
+            resume_from_checkpoint=UUID(checkpoint_id),
+            user_id=user_id_uuid,
+            enhancement_context=enhancement_context,
+            interactive_mode=True,  # Stay in interactive mode to handle potential future pauses
+        )
+
+        # Get final output
+        context_stream = get_unified_context_stream()
+        events = context_stream.get_events()
+        final_output = extract_final_output(events)
+
+        # Update engagement with final result
+        active_engagements[trace_id].update({
+            "status": "COMPLETED",
+            "final_output": final_output,
+            "completed_at": datetime.now()
+        })
+
+        # CRITICAL: Persist COMPLETED status to database
+        if database_service:
+            try:
+                engagement = active_engagements.get(trace_id, {})
+                await database_service.upsert_engagement_status_async({
+                    "trace_id": trace_id,
+                    "status": "COMPLETED",
+                    "current_stage": "COMPLETED",
+                    "stage_number": 8,
+                    "progress_percentage": 100.0,
+                    "user_id": engagement.get("user_id"),
+                    "session_id": engagement.get("session_id"),
+                })
+                logger.info(f"💾 Database COMPLETED status persisted for trace {trace_id}")
+            except Exception as e:
+                logger.error(f"❌ CRITICAL: Failed to persist COMPLETED status to database: {e}")
+
+        logger.info(f"✅ Pipeline resumption after MECE validation completed - Trace ID: {trace_id}")
+
+    except Exception as e:
+        logger.error(f"❌ Pipeline resumption after MECE validation failed - Trace ID: {trace_id}, Error: {e}")
 
         # Mark as failed
         active_engagements[trace_id].update({

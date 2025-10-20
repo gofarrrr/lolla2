@@ -39,7 +39,6 @@ from .exceptions import CheckpointError, RevisionError, PipelineError
 
 # Import existing orchestrators and agents (REFACTORED - Operation All Green Phase 2)
 from src.orchestration.dispatch_orchestrator import DispatchOrchestrator
-from src.engine.engines.core.socratic_cognitive_forge import SocraticCognitiveForge
 from src.engine.agents.problem_structuring_agent import ProblemStructuringAgent
 from src.orchestration.senior_advisor_orchestrator import SeniorAdvisorOrchestrator
 from src.core.enhanced_devils_advocate_system import EnhancedDevilsAdvocateSystem
@@ -127,10 +126,9 @@ class StatefulPipelineOrchestrator:
             logger.warning(f"⚠️ ContextAuditor unavailable: {_e}")
 
         # Initialize existing orchestrators/agents
-        self.socratic_forge = SocraticCognitiveForge()  # Keep for fallback
         self.progressive_question_engine = (
             ProgressiveQuestionEngine()
-        )  # NEW: Unified question generation
+        )  # TOSCA-enabled question generation
         self.problem_structuring_agent = ProblemStructuringAgent()
         self.dispatch_orchestrator = DispatchOrchestrator()
         self.devils_advocate = EnhancedDevilsAdvocateSystem()
@@ -309,7 +307,52 @@ class StatefulPipelineOrchestrator:
             }
 
             # Build execution plan using factory
-            plan = StagePlanBuilder.build_default_plan()
+            # INTERACTIVE MODE: Run only Socratic Questions stage first, then pause
+            from src.core.checkpoint_models import PipelineStage
+
+            # Determine which stages to run based on interactive mode and checkpoint
+            current_pause_point = None
+            if interactive_mode and not resume_from_checkpoint:
+                # First pause: Run SOCRATIC_QUESTIONS only
+                plan = StagePlanBuilder.build_custom_plan([PipelineStage.SOCRATIC_QUESTIONS])
+                current_pause_point = "socratic_questions"
+                logger.info("🔄 Interactive mode: Running SOCRATIC_QUESTIONS stage only (Pause Point 1)")
+            elif interactive_mode and resume_from_checkpoint:
+                # Check checkpoint metadata to determine which pause point we're resuming from
+                # If resuming from Socratic Questions pause, run Problem Structuring only (second pause)
+                # If resuming from MECE validation pause, run remaining 6 stages
+
+                # For now, we'll use a simple heuristic based on context
+                # TODO: Store pause_point in checkpoint metadata for cleaner resume logic
+
+                # Get checkpoint data to determine what was completed
+                checkpoint_data = enhancement_context or {}
+                has_socratic_answers = bool(checkpoint_data.get('answered_questions'))
+                has_mece_approval = bool(checkpoint_data.get('mece_approved'))
+
+                if has_socratic_answers and not has_mece_approval:
+                    # Resume from first pause → run Problem Structuring only (second pause)
+                    plan = StagePlanBuilder.build_custom_plan([
+                        PipelineStage.PROBLEM_STRUCTURING
+                    ])
+                    current_pause_point = "problem_structuring"
+                    logger.info("🔄 Interactive mode RESUME: Running PROBLEM_STRUCTURING only (Pause Point 2)")
+                else:
+                    # Resume from second pause → run remaining 6 stages
+                    remaining_stages = [
+                        PipelineStage.ORACLE_RESEARCH,
+                        PipelineStage.CONSULTANT_SELECTION,
+                        PipelineStage.SYNERGY_PROMPTING,
+                        PipelineStage.PARALLEL_ANALYSIS,
+                        PipelineStage.DEVILS_ADVOCATE,
+                        PipelineStage.SENIOR_ADVISOR,
+                    ]
+                    plan = StagePlanBuilder.build_custom_plan(remaining_stages)
+                    current_pause_point = None  # No more pauses
+                    logger.info("🔄 Interactive mode RESUME: Running remaining 6 stages (Final run)")
+            else:
+                plan = StagePlanBuilder.build_default_plan()
+                current_pause_point = None
 
             # Create pipeline manager
             mgr = DefaultPipelineManager(
@@ -347,6 +390,92 @@ class StatefulPipelineOrchestrator:
                 )
             except Exception:
                 pass
+
+            # INTERACTIVE MODE PAUSE POINTS
+            # Pause Point 1: After Socratic Questions (for user answers)
+            if interactive_mode and current_pause_point == "socratic_questions":
+                # Extract Socratic Questions results from final_context
+                # Try both possible keys: socratic_results (v6) and socratic_questions (adapter output)
+                logger.info(f"🔍 DEBUG: final_context keys = {list(final_context.keys())}")
+                socratic_results = final_context.get("socratic_results") or final_context.get("socratic_questions")
+                logger.info(f"🔍 DEBUG: socratic_results = {socratic_results}")
+                if socratic_results:
+                    logger.info(f"⏸️ PAUSE POINT 1: After SOCRATIC_QUESTIONS - awaiting user answers")
+
+                    # Extract questions for frontend
+                    questions = []
+                    # Handle both dict and object formats
+                    if isinstance(socratic_results, dict):
+                        # Dict format from adapter
+                        questions = socratic_results.get('key_strategic_questions', [])
+                    elif hasattr(socratic_results, 'key_strategic_questions'):
+                        # Object format
+                        questions = [
+                            {
+                                "id": q.id,
+                                "question": q.question,
+                                "category": q.category,
+                                "tier": q.tier,
+                                "tosca_tag": q.tosca_tag,
+                                "auto_generated": q.auto_generated,
+                            }
+                            for q in socratic_results.key_strategic_questions
+                        ]
+
+                    # Extract TOSCA coverage based on format
+                    if isinstance(socratic_results, dict):
+                        tosca_coverage = socratic_results.get('tosca_coverage', {})
+                        missing_tosca = socratic_results.get('missing_tosca_elements', [])
+                    else:
+                        tosca_coverage = getattr(socratic_results, 'tosca_coverage', {})
+                        missing_tosca = getattr(socratic_results, 'missing_tosca_elements', [])
+
+                    return {
+                        "status": "paused_for_user_input",
+                        "pause_point": "socratic_questions",
+                        "trace_id": trace_id,
+                        "socratic_questions": {
+                            "key_strategic_questions": questions,
+                            "tosca_coverage": tosca_coverage,
+                            "missing_tosca_elements": missing_tosca,
+                        },
+                        "questions": questions,  # Backward compatibility
+                        "current_checkpoint": str(trace_id),  # Use trace_id as checkpoint for simplicity
+                        "processing_time_seconds": processing_time,
+                    }
+                else:
+                    logger.warning("⚠️ Interactive mode but no socratic_results found - continuing normally")
+
+            # Pause Point 2: After Problem Structuring (for MECE validation)
+            elif interactive_mode and current_pause_point == "problem_structuring":
+                # Extract Problem Structuring results and build MECE review
+                problem_structure = final_context.get("problem_structure")
+                if problem_structure:
+                    logger.info(f"⏸️ PAUSE POINT 2: After PROBLEM_STRUCTURING - awaiting MECE validation")
+
+                    # Import and use MECE validation module
+                    from src.core.mece_validation import build_mece_review
+                    from types import SimpleNamespace
+
+                    # Build state object for mece_validation.build_mece_review()
+                    state = SimpleNamespace(
+                        problem_structure=problem_structure,
+                        research_gaps=final_context.get("research_gaps", []),
+                        socratic_results=final_context.get("socratic_results")
+                    )
+
+                    mece_review = build_mece_review(state)
+
+                    return {
+                        "status": "paused_for_mece_validation",
+                        "pause_point": "problem_structuring",
+                        "trace_id": trace_id,
+                        "mece_review": mece_review,
+                        "current_checkpoint": str(trace_id),
+                        "processing_time_seconds": processing_time,
+                    }
+                else:
+                    logger.warning("⚠️ Interactive mode but no problem_structure found - continuing normally")
 
             # OPERATION CRYSTAL CLEAR: Warm-on-Complete (build Report v2 bundle and cache)
             try:

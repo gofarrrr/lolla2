@@ -35,13 +35,13 @@ class StartEngagementRequest(BaseModel):
     user_id: Optional[str] = Field(None, description="Optional user identifier")
     enhanced_context: Optional[Dict[str, Any]] = Field(None, description="Enhanced context from query enhancement flow")
     quality_requested: Optional[int] = Field(None, description="Quality level requested (60-95%)")
+    interactive_mode: Optional[bool] = Field(False, description="Enable ULTRATHINK interactive pause for user answers")
+    quality_target: Optional[float] = Field(None, description="Target quality score 0.5-0.95")
 
     # New fields for progressive questions integration
     enhancement_questions_session_id: Optional[str] = Field(None, description="Session ID from progressive questions")
     answered_questions: Optional[list[AnsweredQuestion]] = Field(None, description="Questions answered by user")
     research_questions: Optional[list[ResearchQuestion]] = Field(None, description="Questions to be researched by system")
-    quality_target: Optional[float] = Field(None, description="Target quality score 0.5-0.95")
-    interactive_mode: Optional[bool] = Field(False, description="If true, pause after generating questions to get user answers")
 
 
 class AnswerSubmission(BaseModel):
@@ -53,6 +53,18 @@ class AnswerSubmission(BaseModel):
 class SubmitAnswersRequest(BaseModel):
     """Request to submit answers and resume pipeline"""
     answers: list[AnswerSubmission]
+
+
+class MECEStructureFeedback(BaseModel):
+    """User feedback on MECE framework structure"""
+    approved: bool = Field(False, description="Whether user approves the MECE structure")
+    priority_changes: Optional[list[Dict[str, Any]]] = Field(None, description="Priority adjustments for dimensions")
+    additional_focus: Optional[list[Dict[str, Any]]] = Field(None, description="Additional considerations to add")
+    flagged_assumptions: Optional[list[Dict[str, Any]]] = Field(None, description="Assumptions that need correction")
+    new_dimensions: Optional[list[Dict[str, Any]]] = Field(None, description="New dimensions to add")
+    removed_dimensions: Optional[list[int]] = Field(None, description="Dimension indices to remove")
+    depth_changes: Optional[list[Dict[str, Any]]] = Field(None, description="Analysis depth per dimension")
+    notes: Optional[str] = Field(None, description="Free-form user notes")
 
 
 class OutcomeReportRequest(BaseModel):
